@@ -1,5 +1,14 @@
+#include <Arduino.h>
+#include <SPI.h>
 
 
+
+//---------------------------------------------------
+// Public Constanten
+
+
+//---------------------------------------------------
+// Public Variables
 int Modus_Auswahl = 0;
 int Brems_auswahl = false;
 
@@ -7,8 +16,9 @@ int Sound_Lautstärke = 0;
 
 int SleepModus_Bool = false;
 
+//---------------------------------------------------
+
 void setup() {
-  // put your setup code here, to run once:
     //Bluetooth Verbindung
     attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
     
@@ -18,10 +28,10 @@ void setup() {
     attachInterrupt(dCircuitPlayground.leftButton(), Moduswechsel, RISING);
     //Bei Bremsen auslösen
     attachInterrupt(BREMSE,Brems_Interrupt, RISING);
-}
+}                         
 
 void SleepModus(){
-    if (SleepModus_Bool)
+    if (SleepModus_Bool){
         deattachInterrupt(BlIncoming, Bluetooth, RISING)
         deattachInterrupt(dCircuitPlayground.leftButton(), Moduswechsel, RISING);
         deattachInterrupt(BREMSE,Brems_Interrupt, RISING);
@@ -29,37 +39,39 @@ void SleepModus(){
         Modus_Auswahl = 0;
         set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
         sleep_Cpu();
-    else 
+        }
+    else {
         sleep_disable();
-        setup()  
+        setup() 
+    } 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
         switch Modus_Auswahl{
         //Standart
-        case 0:
+            case 0:
 
-        //Bremse
-        case 1:
-            LICHTER_AN(Array lichter Seite)
-            Ist Brems_Zeit < 5 sec => Brems_auswahl = false
+            //Bremse
+            case 1:
+                LICHTER_AN(Array lichter Seite)
+                Ist Brems_Zeit < 5 sec => Brems_auswahl = false
 
-            if Brems_auswahl 
+                if Brems_auswahl 
+                    LICHTER_AN()
+                else LICHTER_AUS
+            // Heiligenschein
+            case 2:
+                LICHTER_AN(Array lichter Heiligenschein)
+            //Party
+            case 3:
                 LICHTER_AN()
-            else LICHTER_AUS
-        // Heiligenschein
-        case 2:
-            LICHTER_AN(Array lichter Heiligenschein)
-        //Party
-        case 3:
-            LICHTER_AN()
-            LICHTER_AUS()
-        //Sound
-        case 4:
-            clearPixels;
-            Sound_Lautstärke = CircuitPlayground.mic.soundPressureLevel(time) / 20;
-            LICHTER_AN(Array 1-5)
+                LICHTER_AUS()
+            //Sound
+            case 4:
+                clearPixels;
+                Sound_Lautstärke = CircuitPlayground.mic.soundPressureLevel(time) / 20;
+                LICHTER_AN(Array 1-5)
 
     }
 }
