@@ -53,7 +53,10 @@ void setup(void)
   attachInterrupt(dCircuitPlayground.leftButton(), Moduswechsel, RISING);
   //Bei Bremsen auslösen
   attachInterrupt(BREMSE,Brems_Interrupt, RISING);
-  
+
+
+/*=========================================================================*/
+  //Bluetooth
   while (!Serial);  // required for Flora & Micro
   delay(500);
 
@@ -213,12 +216,16 @@ void loop(void)
 
      //Bremse
       case 1:
-          LICHTER_AN(Array lichter Seite)
-          Ist Brems_Zeit < 5 sec => Brems_auswahl = false
+          //allgemeine Lichter
+          LICHTER_AN(Array lichter Seite);
 
-          if Brems_auswahl 
-              LICHTER_AN()
-          else LICHTER_AUS
+          //Bremse
+          if (Brems_Zeit < 5) 
+            Brems_auswahl = false;
+
+          if (Brems_auswahl)
+              LICHTER_AN();
+          else LICHTER_AUS();
       
       // Heiligenschein
       case 2:
@@ -226,8 +233,8 @@ void loop(void)
       
       //Party
       case 3:
-          LICHTER_AN()
-          LICHTER_AUS()
+          //TODO: Funktion
+          LICHTER_AUS();
       
       //Sound
       case 4:
