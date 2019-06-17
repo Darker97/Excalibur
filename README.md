@@ -1,8 +1,31 @@
 # Excalibur
 Ein Smartes Stirnband
 
+Für unser Bachelor Projekt, sollten wir ein Wearables planen und umsetzen. 
+
+## Idee
+
+
+## Stirnband
+### Bauanleitung fürs Stirnband
+
+
+
+
+
+## App
+### Allgemein
+
+
+### Aufbau
+
+
+
 
 ## Verbindungen
+
+In der Komunikation zwischen Band und App wollen wir so wenig wie möglich übertragen, weswegen wir Codes verwenden. Der Circuit Playground setzt diese dann um.
+
 ### Diagram (Idee)
 Der User soll den Modus ändern können, wir realisieren dies auf zwei Wegen
 
@@ -23,4 +46,4 @@ Der User soll den Modus ändern können, wir realisieren dies auf zwei Wegen
 |4|Sound||
 
 
-## Aufbau der App
+
