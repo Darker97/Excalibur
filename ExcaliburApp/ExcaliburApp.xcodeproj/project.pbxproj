@@ -16,6 +16,8 @@
 		AA1BFEF822B574CE00001206 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA1BFEF622B574CE00001206 /* LaunchScreen.storyboard */; };
 		AA1BFF0322B574CE00001206 /* ExcaliburAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1BFF0222B574CE00001206 /* ExcaliburAppTests.swift */; };
 		AA1BFF0E22B574CE00001206 /* ExcaliburAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1BFF0D22B574CE00001206 /* ExcaliburAppUITests.swift */; };
+		AAE6769122B787C9001E1D44 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAE6769022B787C9001E1D44 /* main.storyboard */; };
+		AAE6769322B78896001E1D44 /* Bluetooth_Funktionen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE6769222B78896001E1D44 /* Bluetooth_Funktionen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,9 @@
 		AA1BFF0922B574CE00001206 /* ExcaliburAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExcaliburAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA1BFF0D22B574CE00001206 /* ExcaliburAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcaliburAppUITests.swift; sourceTree = "<group>"; };
 		AA1BFF0F22B574CE00001206 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AAE6769022B787C9001E1D44 /* main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
+		AAE6769222B78896001E1D44 /* Bluetooth_Funktionen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bluetooth_Funktionen.swift; sourceTree = "<group>"; };
+		AAE6769422B791BF001E1D44 /* Verbinfungen.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Verbinfungen.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +111,9 @@
 				AA1BFEEF22B574CD00001206 /* ContentView.swift */,
 				AA1BFEF122B574CE00001206 /* Assets.xcassets */,
 				AA1BFEF622B574CE00001206 /* LaunchScreen.storyboard */,
+				AAE6769022B787C9001E1D44 /* main.storyboard */,
+				AAE6769222B78896001E1D44 /* Bluetooth_Funktionen.swift */,
+				AAE6769422B791BF001E1D44 /* Verbinfungen.md */,
 				AA1BFEF922B574CE00001206 /* Info.plist */,
 				AA1BFEEC22B574CD00001206 /* ExcaliburApp.xcdatamodeld */,
 				AA1BFEF322B574CE00001206 /* Preview Content */,
@@ -253,6 +261,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAE6769122B787C9001E1D44 /* main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +282,7 @@
 				AA1BFEEE22B574CD00001206 /* ExcaliburApp.xcdatamodeld in Sources */,
 				AA1BFEE922B574CD00001206 /* AppDelegate.swift in Sources */,
 				AA1BFEF022B574CD00001206 /* ContentView.swift in Sources */,
+				AAE6769322B78896001E1D44 /* Bluetooth_Funktionen.swift in Sources */,
 				AA1BFEEB22B574CD00001206 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,7 +460,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = CaroUndChristian.ExcaliburApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -470,7 +480,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = CaroUndChristian.ExcaliburApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
