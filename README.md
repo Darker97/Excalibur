@@ -4,21 +4,13 @@ Ein Smartes Stirnband
 
 ## Verbindungen
 ### Diagram (Idee)
-graph LR
-A[User] --> B(Button)
-A --> C(APP)
-B --> D{Stirnband}
-C --> D
+
+
+![Screenshot 2019-06-17 at 14 17 10](https://user-images.githubusercontent.com/35217578/59603934-f9504a80-910a-11e9-91bb-f0ac2ee4891a.png)
 
 ### Diagram (Technisch)
 
-sequenceDiagram
-User ->> App: wählt Modus
-APP ->> BLBoard: Code für den Modus
-BLBoard ->> CircuitPlayground: setze Int für Modus
-Button ->> CircuitPlayground: setzte Modus +1
-Note right of CircuitPlayground: Der Modus kann mit Button oder per App umgestellt werden
-
+![Screenshot 2019-06-17 at 14 17 18](https://user-images.githubusercontent.com/35217578/59603935-f9e8e100-910a-11e9-84ad-1227f53c89d9.png)
 
 ### Codes für die Verbindung
 
