@@ -1,0 +1,628 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AA1BFEE922B574CD00001206 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1BFEE822B574CD00001206 /* AppDelegate.swift */; };
+		AA1BFEEB22B574CD00001206 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1BFEEA22B574CD00001206 /* SceneDelegate.swift */; };
+		AA1BFEEE22B574CD00001206 /* ExcaliburApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AA1BFEEC22B574CD00001206 /* ExcaliburApp.xcdatamodeld */; };
+		AA1BFEF022B574CD00001206 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1BFEEF22B574CD00001206 /* ContentView.swift */; };
+		AA1BFEF222B574CE00001206 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA1BFEF122B574CE00001206 /* Assets.xcassets */; };
+		AA1BFEF522B574CE00001206 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA1BFEF422B574CE00001206 /* Preview Assets.xcassets */; };
+		AA1BFEF822B574CE00001206 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA1BFEF622B574CE00001206 /* LaunchScreen.storyboard */; };
+		AA1BFF0322B574CE00001206 /* ExcaliburAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1BFF0222B574CE00001206 /* ExcaliburAppTests.swift */; };
+		AA1BFF0E22B574CE00001206 /* ExcaliburAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA1BFF0D22B574CE00001206 /* ExcaliburAppUITests.swift */; };
+		AA669EE322B7B21900153638 /* ModiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA669EE222B7B21900153638 /* ModiView.swift */; };
+		AAE6769122B787C9001E1D44 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AAE6769022B787C9001E1D44 /* main.storyboard */; };
+		AAE6769322B78896001E1D44 /* Bluetooth_Funktionen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAE6769222B78896001E1D44 /* Bluetooth_Funktionen.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AA1BFEFF22B574CE00001206 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA1BFEDD22B574CC00001206 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA1BFEE422B574CD00001206;
+			remoteInfo = ExcaliburApp;
+		};
+		AA1BFF0A22B574CE00001206 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AA1BFEDD22B574CC00001206 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA1BFEE422B574CD00001206;
+			remoteInfo = ExcaliburApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AA1BFEE522B574CD00001206 /* ExcaliburApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExcaliburApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA1BFEE822B574CD00001206 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		AA1BFEEA22B574CD00001206 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		AA1BFEED22B574CD00001206 /* ExcaliburApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ExcaliburApp.xcdatamodel; sourceTree = "<group>"; };
+		AA1BFEEF22B574CD00001206 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AA1BFEF122B574CE00001206 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AA1BFEF422B574CE00001206 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AA1BFEF722B574CE00001206 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		AA1BFEF922B574CE00001206 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA1BFEFE22B574CE00001206 /* ExcaliburAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExcaliburAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA1BFF0222B574CE00001206 /* ExcaliburAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcaliburAppTests.swift; sourceTree = "<group>"; };
+		AA1BFF0422B574CE00001206 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA1BFF0922B574CE00001206 /* ExcaliburAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExcaliburAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA1BFF0D22B574CE00001206 /* ExcaliburAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExcaliburAppUITests.swift; sourceTree = "<group>"; };
+		AA1BFF0F22B574CE00001206 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AA669EE222B7B21900153638 /* ModiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModiView.swift; sourceTree = "<group>"; };
+		AAE6769022B787C9001E1D44 /* main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
+		AAE6769222B78896001E1D44 /* Bluetooth_Funktionen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bluetooth_Funktionen.swift; sourceTree = "<group>"; };
+		AAE6769422B791BF001E1D44 /* Verbinfungen.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Verbinfungen.md; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AA1BFEE222B574CD00001206 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA1BFEFB22B574CE00001206 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA1BFF0622B574CE00001206 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AA1BFEDC22B574CC00001206 = {
+			isa = PBXGroup;
+			children = (
+				AA1BFEE722B574CD00001206 /* ExcaliburApp */,
+				AA1BFF0122B574CE00001206 /* ExcaliburAppTests */,
+				AA1BFF0C22B574CE00001206 /* ExcaliburAppUITests */,
+				AA1BFEE622B574CD00001206 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AA1BFEE622B574CD00001206 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AA1BFEE522B574CD00001206 /* ExcaliburApp.app */,
+				AA1BFEFE22B574CE00001206 /* ExcaliburAppTests.xctest */,
+				AA1BFF0922B574CE00001206 /* ExcaliburAppUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AA1BFEE722B574CD00001206 /* ExcaliburApp */ = {
+			isa = PBXGroup;
+			children = (
+				AA1BFEE822B574CD00001206 /* AppDelegate.swift */,
+				AA1BFEEA22B574CD00001206 /* SceneDelegate.swift */,
+				AA1BFEEF22B574CD00001206 /* ContentView.swift */,
+				AA1BFEF122B574CE00001206 /* Assets.xcassets */,
+				AA1BFEF622B574CE00001206 /* LaunchScreen.storyboard */,
+				AAE6769022B787C9001E1D44 /* main.storyboard */,
+				AA669EE222B7B21900153638 /* ModiView.swift */,
+				AAE6769222B78896001E1D44 /* Bluetooth_Funktionen.swift */,
+				AAE6769422B791BF001E1D44 /* Verbinfungen.md */,
+				AA1BFEF922B574CE00001206 /* Info.plist */,
+				AA1BFEEC22B574CD00001206 /* ExcaliburApp.xcdatamodeld */,
+				AA1BFEF322B574CE00001206 /* Preview Content */,
+			);
+			path = ExcaliburApp;
+			sourceTree = "<group>";
+		};
+		AA1BFEF322B574CE00001206 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				AA1BFEF422B574CE00001206 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AA1BFF0122B574CE00001206 /* ExcaliburAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				AA1BFF0222B574CE00001206 /* ExcaliburAppTests.swift */,
+				AA1BFF0422B574CE00001206 /* Info.plist */,
+			);
+			path = ExcaliburAppTests;
+			sourceTree = "<group>";
+		};
+		AA1BFF0C22B574CE00001206 /* ExcaliburAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				AA1BFF0D22B574CE00001206 /* ExcaliburAppUITests.swift */,
+				AA1BFF0F22B574CE00001206 /* Info.plist */,
+			);
+			path = ExcaliburAppUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AA1BFEE422B574CD00001206 /* ExcaliburApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA1BFF1222B574CE00001206 /* Build configuration list for PBXNativeTarget "ExcaliburApp" */;
+			buildPhases = (
+				AA1BFEE122B574CD00001206 /* Sources */,
+				AA1BFEE222B574CD00001206 /* Frameworks */,
+				AA1BFEE322B574CD00001206 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ExcaliburApp;
+			productName = ExcaliburApp;
+			productReference = AA1BFEE522B574CD00001206 /* ExcaliburApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AA1BFEFD22B574CE00001206 /* ExcaliburAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA1BFF1522B574CE00001206 /* Build configuration list for PBXNativeTarget "ExcaliburAppTests" */;
+			buildPhases = (
+				AA1BFEFA22B574CE00001206 /* Sources */,
+				AA1BFEFB22B574CE00001206 /* Frameworks */,
+				AA1BFEFC22B574CE00001206 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA1BFF0022B574CE00001206 /* PBXTargetDependency */,
+			);
+			name = ExcaliburAppTests;
+			productName = ExcaliburAppTests;
+			productReference = AA1BFEFE22B574CE00001206 /* ExcaliburAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		AA1BFF0822B574CE00001206 /* ExcaliburAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA1BFF1822B574CE00001206 /* Build configuration list for PBXNativeTarget "ExcaliburAppUITests" */;
+			buildPhases = (
+				AA1BFF0522B574CE00001206 /* Sources */,
+				AA1BFF0622B574CE00001206 /* Frameworks */,
+				AA1BFF0722B574CE00001206 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA1BFF0B22B574CE00001206 /* PBXTargetDependency */,
+			);
+			name = ExcaliburAppUITests;
+			productName = ExcaliburAppUITests;
+			productReference = AA1BFF0922B574CE00001206 /* ExcaliburAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AA1BFEDD22B574CC00001206 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
+				ORGANIZATIONNAME = "Christian Baltzer";
+				TargetAttributes = {
+					AA1BFEE422B574CD00001206 = {
+						CreatedOnToolsVersion = 11.0;
+					};
+					AA1BFEFD22B574CE00001206 = {
+						CreatedOnToolsVersion = 11.0;
+						TestTargetID = AA1BFEE422B574CD00001206;
+					};
+					AA1BFF0822B574CE00001206 = {
+						CreatedOnToolsVersion = 11.0;
+						TestTargetID = AA1BFEE422B574CD00001206;
+					};
+				};
+			};
+			buildConfigurationList = AA1BFEE022B574CC00001206 /* Build configuration list for PBXProject "ExcaliburApp" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AA1BFEDC22B574CC00001206;
+			productRefGroup = AA1BFEE622B574CD00001206 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AA1BFEE422B574CD00001206 /* ExcaliburApp */,
+				AA1BFEFD22B574CE00001206 /* ExcaliburAppTests */,
+				AA1BFF0822B574CE00001206 /* ExcaliburAppUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AA1BFEE322B574CD00001206 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA1BFEF822B574CE00001206 /* LaunchScreen.storyboard in Resources */,
+				AA1BFEF522B574CE00001206 /* Preview Assets.xcassets in Resources */,
+				AA1BFEF222B574CE00001206 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA1BFEFC22B574CE00001206 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AAE6769122B787C9001E1D44 /* main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA1BFF0722B574CE00001206 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AA1BFEE122B574CD00001206 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA1BFEEE22B574CD00001206 /* ExcaliburApp.xcdatamodeld in Sources */,
+				AA1BFEE922B574CD00001206 /* AppDelegate.swift in Sources */,
+				AA1BFEF022B574CD00001206 /* ContentView.swift in Sources */,
+				AAE6769322B78896001E1D44 /* Bluetooth_Funktionen.swift in Sources */,
+				AA1BFEEB22B574CD00001206 /* SceneDelegate.swift in Sources */,
+				AA669EE322B7B21900153638 /* ModiView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA1BFEFA22B574CE00001206 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA1BFF0322B574CE00001206 /* ExcaliburAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AA1BFF0522B574CE00001206 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA1BFF0E22B574CE00001206 /* ExcaliburAppUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AA1BFF0022B574CE00001206 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA1BFEE422B574CD00001206 /* ExcaliburApp */;
+			targetProxy = AA1BFEFF22B574CE00001206 /* PBXContainerItemProxy */;
+		};
+		AA1BFF0B22B574CE00001206 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA1BFEE422B574CD00001206 /* ExcaliburApp */;
+			targetProxy = AA1BFF0A22B574CE00001206 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AA1BFEF622B574CE00001206 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				AA1BFEF722B574CE00001206 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		AA1BFF1022B574CE00001206 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		AA1BFF1122B574CE00001206 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AA1BFF1322B574CE00001206 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "ExcaliburApp/Preview\\ Content";
+				DEVELOPMENT_TEAM = QHAK8XB995;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = ExcaliburApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = CaroUndChristian.ExcaliburApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		AA1BFF1422B574CE00001206 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "ExcaliburApp/Preview\\ Content";
+				DEVELOPMENT_TEAM = QHAK8XB995;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = ExcaliburApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = CaroUndChristian.ExcaliburApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		AA1BFF1622B574CE00001206 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QHAK8XB995;
+				INFOPLIST_FILE = ExcaliburAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = CaroUndChristian.ExcaliburAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExcaliburApp.app/ExcaliburApp";
+			};
+			name = Debug;
+		};
+		AA1BFF1722B574CE00001206 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QHAK8XB995;
+				INFOPLIST_FILE = ExcaliburAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = CaroUndChristian.ExcaliburAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExcaliburApp.app/ExcaliburApp";
+			};
+			name = Release;
+		};
+		AA1BFF1922B574CE00001206 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QHAK8XB995;
+				INFOPLIST_FILE = ExcaliburAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = CaroUndChristian.ExcaliburAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ExcaliburApp;
+			};
+			name = Debug;
+		};
+		AA1BFF1A22B574CE00001206 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QHAK8XB995;
+				INFOPLIST_FILE = ExcaliburAppUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = CaroUndChristian.ExcaliburAppUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ExcaliburApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AA1BFEE022B574CC00001206 /* Build configuration list for PBXProject "ExcaliburApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA1BFF1022B574CE00001206 /* Debug */,
+				AA1BFF1122B574CE00001206 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA1BFF1222B574CE00001206 /* Build configuration list for PBXNativeTarget "ExcaliburApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA1BFF1322B574CE00001206 /* Debug */,
+				AA1BFF1422B574CE00001206 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA1BFF1522B574CE00001206 /* Build configuration list for PBXNativeTarget "ExcaliburAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA1BFF1622B574CE00001206 /* Debug */,
+				AA1BFF1722B574CE00001206 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AA1BFF1822B574CE00001206 /* Build configuration list for PBXNativeTarget "ExcaliburAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA1BFF1922B574CE00001206 /* Debug */,
+				AA1BFF1A22B574CE00001206 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		AA1BFEEC22B574CD00001206 /* ExcaliburApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				AA1BFEED22B574CD00001206 /* ExcaliburApp.xcdatamodel */,
+			);
+			currentVersion = AA1BFEED22B574CD00001206 /* ExcaliburApp.xcdatamodel */;
+			path = ExcaliburApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = AA1BFEDD22B574CC00001206 /* Project object */;
+}
