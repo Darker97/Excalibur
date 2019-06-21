@@ -1,3 +1,6 @@
+#include <Adafruit_NeoPixel.h>
+
+//Caro
 #include <Arduino.h>
 #include <SPI.h>
 #include "Adafruit_BLE.h"
@@ -207,6 +210,151 @@ void Vibrieren(){
    //VIBRIERE
 }
 /*=========================================================================*/
+/*=========================================================================*/
+//Funktionen für die NeoPixels
+
+//normales ColorWipe
+void colorWipe(uint32_t c, uint8_t wait) {
+        for(uint16_t i=0; i<pixels.numPixels(); i++) {
+         pixels.setPixelColor(i, c);
+         pixels.show();
+         delay(wait);
+       }
+     }
+
+//um alle Pixel auf eine Farbe zu setzten ähnlich wie fill
+void setpix(int red, int green, int blue) {
+  for(int p = 0; p < pixels.numPixels(); p++) {
+    pixels.setPixelColor(p, pixels.Color(red, green, blue));
+  }
+  pixels.show();
+}  
+
+//Regenbogen wird über ColorWipe immer wieder an und aus gemacht
+void blink(int wait) {
+   // Hue of first pixel runs 5 complete loops through the color wheel.
+  // Color wheel has a range of 65536 but it's OK if we roll over, so
+  // just count from 0 to 5*65536. Adding 256 to firstPixelHue each time
+  // means we'll make 5*65536/256 = 1280 passes through this outer loop:
+  for(long firstPixelHue = 0; firstPixelHue < 5*65536; firstPixelHue += 256) {
+    for(int i=0; i<pixels.numPixels(); i++) { // For each pixel in strip...
+      // Offset pixel hue by an amount to make one full revolution of the
+      // color wheel (range of 65536) along the length of the strip
+      // (strip.numPixels() steps):
+      int pixelHue = firstPixelHue + (i * 65536L / pixels.numPixels());
+      // strip.ColorHSV() can take 1 or 3 arguments: a hue (0 to 65535) or
+      // optionally add saturation and value (brightness) (each 0 to 255).
+      // Here we're using just the single-argument hue variant. The result
+      // is passed through strip.gamma32() to provide 'truer' colors
+      // before assigning to each pixel:
+      for(int p = 0; p < pixels.numPixels(); p++) {
+        pixels.setPixelColor(i, pixels.gamma32(pixels.ColorHSV(pixelHue)));
+      }
+    }
+    pixels.show(); // Update strip with new contents
+    delay(wait);  // Pause for a moment
+    for(int i=0; i<pixels.numPixels(); i++) { // For each pixel in strip...
+      // Offset pixel hue by an amount to make one full revolution of the
+      // color wheel (range of 65536) along the length of the strip
+      // (strip.numPixels() steps):
+      //int pixelHue = firstPixelHue + (i * 65536L / pixels.numPixels());
+      // strip.ColorHSV() can take 1 or 3 arguments: a hue (0 to 65535) or
+      // optionally add saturation and value (brightness) (each 0 to 255).
+      // Here we're using just the single-argument hue variant. The result
+      // is passed through strip.gamma32() to provide 'truer' colors
+      // before assigning to each pixel:
+      for(int p = 0; p < pixels.numPixels(); p++) {
+        pixels.setPixelColor(i, pixels.Color(0,0,0));
+      }
+      pixels.show();
+      delay(10);
+    }
+   // delay(5);
+  }
+}
+
+
+
+void buntBlink(int r, int g, int b) {
+  for(int i = 5; i >= 0; i--) {
+     
+     if(r > 255) {
+      r = r - 5;
+     } else {
+      r = r + 5;
+     }
+     
+     if(g > 255) {
+      g = g - 5;
+     } else {
+      g = g + 5 ;
+     }
+     
+     if(b > 255) {
+      b = b - 5;
+     } else {
+      b = b + 5;
+     }
+
+     setpixels(r,g,b);
+     
+     delay(100);
+     strip.clear(); 
+     delay(100);    
+  }
+}
+     
+
+//kann man den Endpunkt und Anfangspunkt von colorWipe deifnieren 
+void colorWipeDefine(uint32_t c, uint8_t wait, int begin, int end) {
+        for(uint16_t i=begin; i<end; i++) {
+         pixels.setPixelColor(i, c);
+         pixels.show();
+         delay(wait);
+       }
+}
+
+// Rainbow-enhanced theater marquee. Pass delay time (in ms) between frames.
+void theaterChaseRainbow(int wait) {
+  int firstPixelHue = 0;     // First pixel starts at red (hue 0)
+  for(int a=0; a<30; a++) {  // Repeat 30 times...
+    for(int b=0; b<3; b++) { //  'b' counts from 0 to 2...
+      pixels.clear();         //   Set all pixels in RAM to 0 (off)
+      // 'c' counts up from 'b' to end of strip in increments of 3...
+      for(int c=b; c<pixels.numPixels(); c += 3) {
+        // hue of pixel 'c' is offset by an amount to make one full
+        // revolution of the color wheel (range 65536) along the length
+        // of the strip (strip.numPixels() steps):
+        int      hue   = firstPixelHue + c * 65536L / pixels.numPixels();
+        uint32_t color = pixels.gamma32(pixels.ColorHSV(hue)); // hue -> RGB
+        pixels.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+      }
+      strip.show();                // Update strip with new contents
+      delay(wait);                 // Pause for a moment
+      firstPixelHue += 65536 / 90; // One cycle of color wheel over 90 frames
+    }
+  }
+}
+
+void partyParty() {
+  blink(10);
+  theatherChaseRainbow(50);
+  //pixels.fill(pixels.Color(50,0,0));
+  //CircuitPlayground.fill(CircuitPlayground.Color(50, 0, 0)); //geht das wirklich so?
+  buntBlink(255,0,125);
+  buntBlink(125,0,255);
+  buntBlink(0,255,125);
+  buntBlink(0,125,255);
+  buntBlink(125,255,0);
+  buntBlink(255,125,0);
+  
+  
+}
+     
+/*=========================================================================*/
+
+
+
 
 void loop(void)
   {
@@ -217,19 +365,28 @@ void loop(void)
      //Bremse
       case 1:
           //allgemeine Lichter
-          LICHTER_AN(Array lichter Seite);
+          pixels.fill(pixels.Color(50,50,50));
+          pixels.show();
 
           //Bremse
           if (Brems_Zeit < 5) 
             Brems_auswahl = false;
 
           if (Brems_auswahl)
-              LICHTER_AN();
+              //LICHTER_AN();
+              pixels.fill(pixels.Color(50,50,50),0,10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
+              pixels.fill(pixels.Color(50,0,0),10,10);
+              pixels.fill(pixels.Color(50,50,50),20,10);
+              pixels.fill(pixels.Color(50,50,50),30,10);
+              pixels.fill(pixels.Color(50,0,0),40,10);
+              pixels.fill(pixels.Color(50,50,50),50,10);
+              pixels.show();
           else LICHTER_AUS();
+          
       
       // Heiligenschein
       case 2:
-          pixels.fill(rgb(224, 253, 255));
+          colorWipe(pixels.Color(255, 128, 0), 50);
       
       //Party
       case 3:
