@@ -56,9 +56,29 @@ void setup(void)
   attachInterrupt(dCircuitPlayground.leftButton(), Moduswechsel, RISING);
   //Bei Bremsen auslösen
   attachInterrupt(BREMSE,Brems_Interrupt, RISING);
+  
+/*=========================================================================*/
+  //setup for NeoPixels
 
+    // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
+    // Any other board, you can remove this part (but no harm leaving it):
+  #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
+    clock_prescale_set(clock_div_1);
+  #endif
+  // END of Trinket-specific code.
+  //  CircuitPlayground.clear();
+
+  CircuitPlayground.begin();
+
+  //neo pixel initalisieren und alle auf aus und Helligkeit einstellen
+  pixels.clear();
+  pixels.begin();
+  
+  pixels.show();
+  pixels.setBrightness(50); //Helligkeit 
 
 /*=========================================================================*/
+
   //Bluetooth
   while (!Serial);  // required for Flora & Micro
   delay(500);
@@ -210,6 +230,24 @@ void Vibrieren(){
    //VIBRIERE
 }
 /*=========================================================================*/
+
+//Funktionen für CircuitPlaygroundNeopixels
+
+//um alle Pixel auf eine Farbe zu setzten ähnlich wie fill für Circuit
+void setpixCircuit(int red, int green, int blue) {
+  for(int p = 0; p < 10; p++) {
+    CircuitPlayground.setPixelColor(p, red,   green,   blue);
+  }
+  
+}  
+
+void colorWipeCircuit(uint32_t c, uint8_t wait) {
+        for(uint16_t i=0; i<10; i++) {
+         CircuitPlayground.setPixelColor(i,c);
+         pixels.show();
+         delay(wait);
+       }
+}
 /*=========================================================================*/
 //Funktionen für die NeoPixels
 
@@ -387,6 +425,8 @@ void loop(void)
       // Heiligenschein
       case 2:
           colorWipe(pixels.Color(255, 128, 0), 50);
+          setpixCircuit(255, 128, 0);
+          
       
       //Party
       case 3:
