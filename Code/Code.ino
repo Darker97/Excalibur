@@ -419,7 +419,7 @@ void loop(void)
               pixels.fill(pixels.Color(50,0,0),40,10);
               pixels.fill(pixels.Color(50,50,50),50,10);
               pixels.show();
-          else LICHTER_AUS();
+          else pixels.clear();
           
       
       // Heiligenschein
