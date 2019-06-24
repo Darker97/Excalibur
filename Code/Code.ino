@@ -45,15 +45,15 @@ void error(const __FlashStringHelper*err) {
 
 
 /*=========================================================================*/
-
+//TODO
 void setup(void)
 {
   attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
   
-  attachInterrupt(BlIncoming, Bluetooth, RISING)
+  attachInterrupt(BlIncoming, Bluetooth, RISING);
 
 
-  attachInterrupt(dCircuitPlayground.leftButton(), Moduswechsel, RISING);
+  attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
   //Bei Bremsen auslösen
   attachInterrupt(BREMSE,Brems_Interrupt, RISING);
   
@@ -141,11 +141,11 @@ void setup(void)
 }
 
 /*=========================================================================*/
-
+//abgeschlossen
 void SleepModus(){
     if (SleepModus_Bool){
         deattachInterrupt(BlIncoming, Bluetooth, RISING)
-        deattachInterrupt(dCircuitPlayground.leftButton(), Moduswechsel, RISING);
+        deattachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
         deattachInterrupt(BREMSE,Brems_Interrupt, RISING);
 
         Modus_Auswahl = 0;
@@ -159,7 +159,7 @@ void SleepModus(){
 }
 
 
-
+//abgeschlossen
 void Moduswechsel(){
     pixels.clearPixels();
     Modus_Auswahl++;
@@ -168,12 +168,20 @@ void Moduswechsel(){
     }
 }
 
+//abgeschlossen
 void Brems_Interrupt(){
-    //
-    Brems_auswahl = true;
-    Brems_Zeit = NOW;
-    Bluetooth_out("Gebremst");
+    // abgeschlossen
+    int temp_Bremse = CicuitPlayground.motionZ();
+
+    if (temp_Bremse < 0 ){
+        Brems_auswahl = true;
+      }else{
+        Brems_auswahl = false;
+        }
+    
+    //Bluetooth_out("Gebremst");
 }
+
 
 void LICHTER_AN(int [][] LICHTER){
     for (int i = 0; i < LICHTER.length; i++){
@@ -181,8 +189,10 @@ void LICHTER_AN(int [][] LICHTER){
     }
 }
 
+//Notwendig?
 void LICHTER_AUS(){
     pixels.clear();
+    CircuitPlayground.clearPixels();
 }
 
 
@@ -191,29 +201,62 @@ void LICHTER_AUS(){
 /*=========================================================================*/
 
 //Auswerten von Signalen vom Handy
+//Fertig
 void Bluetooth_Input(){
     
     char[] Input, inputs[BUFSIZE+1];
     Input = Serial.readBytes(inputs, BUFSIZE);
     
     Modus_Auswahl = 0;
-    pixels.clearPixels;
 
-    //TODO: Farbe decoden
-    uint32_t FARBE = Input[1];
+    //ALle Pixels clearen
+    pixels.clear();
+    CircuitPlayground.clearPixels();
+
+
+    
+    if (Input.count == 1){
+        Modus_Auswal = Input[0];
+     }
+      
     if (Input.count == 2){
-        switch case Input[0]
+      
+       uint32_t FARBE;
+         switch (Input[1]){
+          //Rot
+          case 1:   
+              FARBE = pixels.Color(255,0,0);
+          //Grün
+          case 2:
+              FARBE = pixels.Color(0,255,0);
+          //Blau
+          case 3:
+              FARBE = pixels.Color(0,0,255);
+          //Gelb
+          case 4:
+              FARBE = pixels.Color(255,128,0);
+          //Pink
+          case 5:
+              FARBE = pixels.Color(220,118,255);
+          //weiß
+          default: 
+              FARBE = pixels.Color(255,255,255);
+         }
+        switch (Input[0]){
           case 1:   pixels.fill(FARBE, 0, 10);
           case 2:   pixels.fill(FARBE, 10, 10);
           case 3:   pixels.fill(Farbe, 20, 10);
+          default:  pixels.clear();
+        }
     }
     else {
         if Input[0] = -1
-            clearPixels;
+            pixels.clear();
+            CircuitPlayground.clearPixels();
         else if Input[0] = -2
             Bluetooth_out(Modus_Auswahl);
         else if Input[0] = -3
-            Vibrieren();
+            //Vibrieren();
         else
             Modus_Auswahl = Input[0];
         }
@@ -394,17 +437,18 @@ void partyParty() {
 
 
 
+//TODO
 void loop(void)
   {
-    switch Modus_Auswahl{
+    switch (Modus_Auswahl){
     //Standart
       case 0:
 
      //Bremse
       case 1:
-          //allgemeine Lichter
           pixels.fill(pixels.Color(50,50,50));
           pixels.show();
+          //allgemeine Lichter rechts und Links
 
           //Bremse
           if (Brems_Zeit < 5) 
@@ -419,7 +463,7 @@ void loop(void)
               pixels.fill(pixels.Color(50,0,0),40,10);
               pixels.fill(pixels.Color(50,50,50),50,10);
               pixels.show();
-          else LICHTER_AUS();
+          else pixels.clear();
           
       
       // Heiligenschein
@@ -433,7 +477,7 @@ void loop(void)
           //TODO: Funktion
           LICHTER_AUS();
       
-      //Sound
+      //Sound Farbe im Zufall => rand()
       case 4:
           pixels.clearPixels;
           Sound_Lautstärke = CircuitPlayground.mic.soundPressureLevel(time) / 20;
