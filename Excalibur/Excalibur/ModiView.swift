@@ -18,7 +18,7 @@ class ModiView: UITableViewController {
         "Sound"
     ]
     let Detail = [
-        "tut nichts/schaltet die Lichte aus",
+        "tut nichts/schaltet die Lichter aus",
         "Ein kleines Bremslicht 🔴",
         "Feel like an Angel😇",
         "UTZUTZUTZ 🎊 🎉",
