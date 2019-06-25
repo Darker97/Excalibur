@@ -8,6 +8,7 @@
 
 import Foundation
 
+import CoreBluetooth
 class Bluetooth_Funktionen{
     
     func senden(payload: Int){
