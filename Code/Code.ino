@@ -1,6 +1,5 @@
 #include <Adafruit_NeoPixel.h>
 
-//Caro
 #include <Arduino.h>
 #include <SPI.h>
 #include "Adafruit_BLE.h"
@@ -32,7 +31,10 @@ int Sound_Lautstärke = 0;
 
 int SleepModus_Bool = false;
 /*=========================================================================*/
+//Deffinieren von Werten
+#define MAX_TEMPERATUR        50
 
+/*=========================================================================*/
 
 // A small helper
 void error(const __FlashStringHelper*err) {
@@ -42,13 +44,22 @@ void error(const __FlashStringHelper*err) {
 
 /*=========================================================================*/
 
-
+//Kleine Sichereheitsroutine die die Temperatur checkt und das board in den Sleep Modus schaltet, sollte es zu heiß werden.
+void Sicherheit_Temp(){
+  int Temp_Temperatur = CircuitPlayground.temperature();
+  if (Temp_Temperatur >= MAX_TEMPERATUR){
+        Serial.println("ZU HEIß");
+        SleepModus();
+    }
+  
+  }
 
 /*=========================================================================*/
 //TODO
 void setup(void)
 {
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
+  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAN, RISING);
+  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
   
   attachInterrupt(BlIncoming, Bluetooth, RISING);
 
@@ -141,9 +152,11 @@ void setup(void)
 }
 
 /*=========================================================================*/
+//Sleep Modi an
+
 //abgeschlossen
 void SleepModus(){
-    if (SleepModus_Bool){
+        Serial.println("gut Nacht :)")
         deattachInterrupt(BlIncoming, Bluetooth, RISING)
         deattachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
         deattachInterrupt(BREMSE,Brems_Interrupt, RISING);
@@ -151,14 +164,14 @@ void SleepModus(){
         Modus_Auswahl = 0;
         set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
         sleep_Cpu();
-        }
-    else {
-        sleep_disable();
-        setup() 
-    } 
 }
 
-
+void SleepModusAUS(){
+       sleep_disable();
+       setup() 
+       Serial.println("Bin wach :D")
+  }
+/*=========================================================================*/
 //abgeschlossen
 void Moduswechsel(){
     pixels.clearPixels();
@@ -268,7 +281,7 @@ void Bluetooth_out(char [] output){
     Serial.print(output);
 }
 
-
+//Nicht implementiert
 void Vibrieren(){
    //VIBRIERE
 }
@@ -434,12 +447,12 @@ void partyParty() {
      
 /*=========================================================================*/
 
-
-
-
 //TODO
 void loop(void)
   {
+
+    Sicherheit_Temp();
+    
     switch (Modus_Auswahl){
     //Standart
       case 0:
