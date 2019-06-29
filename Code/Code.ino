@@ -50,11 +50,7 @@ float mapf(float x, float in_min, float in_max, float out_min, float out_max);
 //Ende SOund Sensor STuff
 /*=========================================================================*/
 //Deffinieren von Werten
-<<<<<<< HEAD
-#define MAX_TEMPERATUR        50
-=======
 #define MAX_TEMPERATUR 50
->>>>>>> Hübscher
 
 /*=========================================================================*/
 
@@ -69,26 +65,6 @@ void error(const __FlashStringHelper *err)
 /*=========================================================================*/
 
 //Kleine Sichereheitsroutine die die Temperatur checkt und das board in den Sleep Modus schaltet, sollte es zu heiß werden.
-<<<<<<< HEAD
-void Sicherheit_Temp(){
-  int Temp_Temperatur = CircuitPlayground.temperature();
-  if (Temp_Temperatur >= MAX_TEMPERATUR){
-        Serial.println("ZU HEIß");
-        SleepModus();
-    }
-  
-  }
-
-/*=========================================================================*/
-//TODO
-void setup(void)
-{
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAN, RISING);
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
-  
-  attachInterrupt(BlIncoming, Bluetooth, RISING);
-
-=======
 void Sicherheit_Temp()
 {
   int Temp_Temperatur = CircuitPlayground.temperature();
@@ -98,7 +74,6 @@ void Sicherheit_Temp()
     SleepModus();
   }
 }
->>>>>>> Hübscher
 
 /*=========================================================================*/
 //Sleep Modi an
@@ -120,13 +95,15 @@ void SleepModusAUS()
 {
   sleep_disable();
   setup()
-      Serial.println("Bin wach :D")
+  Serial.println("Bin wach :D")
 }
 /*=========================================================================*/
 //abgeschlossen
 void Moduswechsel()
 {
-  pixels.clearPixels();
+  //ALle Pixels clearen
+  pixels.clear();
+  CircuitPlayground.clearPixels();
   Modus_Auswahl++;
   if (Modus_Auswahl == 5)
   {
@@ -149,47 +126,9 @@ void Brems_Interrupt()
     Brems_auswahl = false;
   }
 
-<<<<<<< HEAD
-  // Set module to DATA mode
-  Serial.println( F("Switching to DATA mode!") );
-  ble.setMode(BLUEFRUIT_MODE_DATA);
-
-  Serial.println(F("******************************"));
-}
-
-/*=========================================================================*/
-//Sleep Modi an
-
-//abgeschlossen
-void SleepModus(){
-        Serial.println("gut Nacht :)")
-        deattachInterrupt(BlIncoming, Bluetooth, RISING)
-        deattachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
-        deattachInterrupt(BREMSE,Brems_Interrupt, RISING);
-
-        Modus_Auswahl = 0;
-        set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
-        sleep_Cpu();
-}
-
-void SleepModusAUS(){
-       sleep_disable();
-       setup() 
-       Serial.println("Bin wach :D")
-  }
-/*=========================================================================*/
-//abgeschlossen
-void Moduswechsel(){
-    pixels.clearPixels();
-    Modus_Auswahl++;
-    if(Modus_Auswahl == 5){
-        Modus_Auswahl = 0;
-    }
-=======
   //Bluetooth_out("Gebremst");
->>>>>>> Hübscher
 }
-
+/*
 void LICHTER_AN(int[][] LICHTER)
 {
   for (int i = 0; i < LICHTER.length; i++)
@@ -204,7 +143,7 @@ void LICHTER_AUS()
   pixels.clear();
   CircuitPlayground.clearPixels();
 }
-
+*/
 /*=========================================================================*/
 
 //Auswerten von Signalen vom Handy
@@ -214,8 +153,6 @@ void Bluetooth_Input()
 
   char[] Input, inputs[BUFSIZE + 1];
   Input = Serial.readBytes(inputs, BUFSIZE);
-
-  Modus_Auswahl = 0;
 
   //ALle Pixels clearen
   pixels.clear();
@@ -265,13 +202,14 @@ void Bluetooth_Input()
   }
   else
   {
-    if
-      Input[0] = -1 pixels.clear();
-    CircuitPlayground.clearPixels();
-    else if Input[0] = -2 Bluetooth_out(Modus_Auswahl);
-    else if Input[0] = -3
-                       //Vibrieren();
-                       else Modus_Auswahl = Input[0];
+    if(Input[0] == -1) 
+      {pixels.clear();
+      CircuitPlayground.clearPixels();
+      }
+    else if (Input[0] == -2) Bluetooth_out(Modus_Auswahl);
+    else if (Input[0] == -3)
+        //Vibrieren();
+    else Modus_Auswahl = Input[0];
   }
 }
 
@@ -283,14 +221,9 @@ void Bluetooth_out(char[] output)
 }
 
 //Nicht implementiert
-<<<<<<< HEAD
-void Vibrieren(){
-   //VIBRIERE
-=======
 void Vibrieren()
 {
   //VIBRIERE
->>>>>>> Hübscher
 }
 /*=========================================================================*/
 
@@ -317,7 +250,7 @@ void colorWipeCircuit(uint32_t c, uint8_t wait)
 /*=========================================================================*/
 //Funktionen für die NeoPixels
 
-//Funfktionen für SoundSensor NeoPixel 
+//Funktionen für SoundSensor NeoPixel 
 //Used to draw a line between two points of a given color
 void drawLine(uint8_t from, uint8_t to, uint32_t c) {
   uint8_t fromTemp;
@@ -407,6 +340,7 @@ void colorWipe(uint32_t c, uint8_t wait)
   }
 }
 
+//TODO durch fill ersetzten?
 //um alle Pixel auf eine Farbe zu setzten ähnlich wie fill
 void setpix(int red, int green, int blue)
 {
@@ -506,7 +440,8 @@ void buntBlink(int r, int g, int b)
   }
 }
 
-//kann man den Endpunkt und Anfangspunkt von colorWipe deifnieren
+//TODO
+//kann man den Endpunkt und Anfangspunkt von colorWipe definieren
 void colorWipeDefine(uint32_t c, uint8_t wait, int begin, int end)
 {
   for (uint16_t i = begin; i < end; i++)
@@ -566,8 +501,6 @@ void setup(void)
   attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAN, RISING);
   attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
 
-<<<<<<< HEAD
-=======
   attachInterrupt(BlIncoming, Bluetooth, RISING);
 
   attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
@@ -661,7 +594,6 @@ void setup(void)
 }
 
 /*=========================================================================*/
->>>>>>> Hübscher
 //TODO
 void loop(void)
 {
@@ -670,19 +602,16 @@ void loop(void)
 
   switch (Modus_Auswahl)
   {
-<<<<<<< HEAD
-
-    Sicherheit_Temp();
-    
-    switch (Modus_Auswahl){
-=======
->>>>>>> Hübscher
     //Standart
   case 0:
 
     //Bremse
   case 1:
-    pixels.fill(pixels.Color(50, 50, 50));
+    //TODO Positionen prüfen
+    pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
+    pixels.fill(pixels.Color(50, 50, 50), 20, 10);
+    pixels.fill(pixels.Color(50, 50, 50), 30, 10);
+    pixels.fill(pixels.Color(50, 50, 50), 50, 10);
     pixels.show();
     //allgemeine Lichter rechts und Links
 
@@ -692,7 +621,7 @@ void loop(void)
 
     if (Brems_auswahl)
       //LICHTER_AN();
-      pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
+    pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
     pixels.fill(pixels.Color(50, 0, 0), 10, 10);
     pixels.fill(pixels.Color(50, 50, 50), 20, 10);
     pixels.fill(pixels.Color(50, 50, 50), 30, 10);
@@ -708,14 +637,10 @@ void loop(void)
 
   //Party
   case 3:
-    //TODO: Funktion
-    LICHTER_AUS();
+    partyParty();
 
   //Sound Farbe im Zufall => rand()
   case 4:
-    pixels.clearPixels;
-    //Sound_Lautstärke = CircuitPlayground.mic.soundPressureLevel(time) / 20;
-    //LICHTER_AN(Array 1 - 5)
     soundSensor();
   }
 }
