@@ -8,6 +8,8 @@
 
 #include "BluefruitConfig.h"
 
+#include <Wire.h>
+
 #if SOFTWARE_SERIAL_AVAILABLE
 #include <SoftwareSerial.h>
 #endif
@@ -17,6 +19,13 @@
 #define MINIMUM_FIRMWARE_VERSION "0.6.6"
 #define MODE_LED_BEHAVIOUR "MODE"
 #define BLUEFRUIT_HWSERIAL_NAME Serial1
+
+#define SAMPLE_WINDOW   10  // Sample window for average level
+#define PEAK_HANG       24  // Time of pause before peak dot falls
+#define PEAK_FALL        4  // Rate of falling peak dot
+
+#define INPUT_FLOOR     56  // Lower range of mic sensitivity in dB SPL
+#define INPUT_CEILING  110  // Upper range of mic sensitivity in db SPL
 
 Adafruit_BluefruitLE_UART ble(BLUEFRUIT_HWSERIAL_NAME, BLUEFRUIT_UART_MODE_PIN);
 
@@ -30,6 +39,15 @@ int Brems_auswahl = false;
 int Sound_Lautstärke = 0;
 
 int SleepModus_Bool = false;
+
+//Anfang SOundSensor STuff
+byte peak = 16;        // Peak level of column; used for falling dots
+unsigned int sample;
+byte dotCount = 0;     //Frame counter for peak dot
+byte dotHangCount = 0; //Frame counter for holding peak dot
+
+float mapf(float x, float in_min, float in_max, float out_min, float out_max);
+//Ende SOund Sensor STuff
 /*=========================================================================*/
 //Deffinieren von Werten
 <<<<<<< HEAD
@@ -299,6 +317,85 @@ void colorWipeCircuit(uint32_t c, uint8_t wait)
 /*=========================================================================*/
 //Funktionen für die NeoPixels
 
+//Funfktionen für SoundSensor NeoPixel 
+//Used to draw a line between two points of a given color
+void drawLine(uint8_t from, uint8_t to, uint32_t c) {
+  uint8_t fromTemp;
+  if (from > to) {
+    fromTemp = from;
+    from = to;
+    to = fromTemp;
+  }
+  for(int i=from; i<=to; i++){
+    pixels.setPixelColor(i, c);
+  }
+}
+
+float mapf(float x, float in_min, float in_max, float out_min, float out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+// Input a value 0 to 255 to get a color value.
+// The colours are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos) {
+  if(WheelPos < 85) {
+    return pixels.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  } 
+  else if(WheelPos < 170) {
+    WheelPos -= 85;
+    return pixels.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } 
+  else {
+    WheelPos -= 170;
+    return pixels.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  }
+}
+
+void soundSensor() {
+  // diese Func könnte man auch in die Loop schreiben? 
+  float peakToPeak = 0;   // peak-to-peak level
+  unsigned int c, y;
+
+  //get peak sound pressure level over the sample window
+  peakToPeak = CircuitPlayground.mic.soundPressureLevel(SAMPLE_WINDOW);
+
+  //limit to the floor value
+  peakToPeak = max(INPUT_FLOOR, peakToPeak);
+ 
+  // Serial.println(peakToPeak);
+  for(int i = 0; i <= 59; i++) {
+    pixels.setPixelColor(i,Wheel(map(i,0,59,30,150)));
+    setpixCircuit(0,255,0);
+  }
+  c = mapf(peakToPeak, INPUT_FLOOR, INPUT_CEILING, 60, 0);
+
+  // Turn off pixels that are below volume threshold.
+  if(c < peak) {
+    peak = c;        // Keep dot on top
+    dotHangCount = 0;    // make the dot hang before falling
+  }
+  if (c <= 60) { // Fill partial column with off pixels
+    drawLine(60, 60-c, pixels.Color(0, 0, 0));
+  }
+
+    // Set the peak dot to match the rainbow gradient
+  y = 60 - peak;
+  pixels.setPixelColor(y-1,Wheel(map(y,0,59,30,150)));
+  pixels.show();
+
+  // Frame based peak dot animation
+  if(dotHangCount > PEAK_HANG) { //Peak pause length
+    if(++dotCount >= PEAK_FALL) { //Fall rate 
+      peak++;
+      dotCount = 0;
+    }
+  } 
+  else {
+    dotHangCount++; 
+  }
+}
+
 //normales ColorWipe
 void colorWipe(uint32_t c, uint8_t wait)
 {
@@ -450,13 +547,15 @@ void partyParty()
 {
   blink(10);
   theatherChaseRainbow(50);
-  //pixels.fill(pixels.Color(50,0,0));
-  //CircuitPlayground.fill(CircuitPlayground.Color(50, 0, 0)); //geht das wirklich so?
+  //colorWipeCircuit(); ?
   buntBlink(255, 0, 125);
   buntBlink(125, 0, 255);
+  blink(10);
   buntBlink(0, 255, 125);
+  theatherChaseRainbow(50);
   buntBlink(0, 125, 255);
   buntBlink(125, 255, 0);
+  blink(10);
   buntBlink(255, 125, 0);
 }
 
@@ -615,7 +714,8 @@ void loop(void)
   //Sound Farbe im Zufall => rand()
   case 4:
     pixels.clearPixels;
-    Sound_Lautstärke = CircuitPlayground.mic.soundPressureLevel(time) / 20;
-    LICHTER_AN(Array 1 - 5)
+    //Sound_Lautstärke = CircuitPlayground.mic.soundPressureLevel(time) / 20;
+    //LICHTER_AN(Array 1 - 5)
+    soundSensor();
   }
 }
