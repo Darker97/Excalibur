@@ -1,3 +1,6 @@
+#include <Adafruit_CircuitPlayground.h>
+#include <Adafruit_Circuit_Playground.h>
+
 #include <Adafruit_NeoPixel.h>
 
 #include <Arduino.h>
@@ -14,7 +17,7 @@
 #include <SoftwareSerial.h>
 #endif
 
-#define NEOPIXELS_PIN 12
+#define NEOPIXELS_PIN A1
 #define FACTORYRESET_ENABLE 1
 #define MINIMUM_FIRMWARE_VERSION "0.6.6"
 #define MODE_LED_BEHAVIOUR "MODE"
@@ -29,14 +32,14 @@
 
 Adafruit_BluefruitLE_UART ble(BLUEFRUIT_HWSERIAL_NAME, BLUEFRUIT_UART_MODE_PIN);
 
-Adafruit_NeoPixel pixels(60, NEOPIXELSPIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(60, NEOPIXELS_PIN, NEO_GRB + NEO_KHZ800);
 
 /*=========================================================================*/
 // Public Variables
 int Modus_Auswahl = 0;
 int Brems_auswahl = false;
 
-int Sound_Lautstärke = 0;
+//int Sound_Lautstärke = 0;
 
 int SleepModus_Bool = false;
 
@@ -64,6 +67,8 @@ void error(const __FlashStringHelper *err)
 
 /*=========================================================================*/
 
+
+
 //Kleine Sichereheitsroutine die die Temperatur checkt und das board in den Sleep Modus schaltet, sollte es zu heiß werden.
 void Sicherheit_Temp()
 {
@@ -78,22 +83,22 @@ void Sicherheit_Temp()
 /*=========================================================================*/
 //Sleep Modi an
 
-//abgeschlossen
+//TODO: CPU zum schlafen bringen
 void SleepModus()
 {
-  Serial.println("gut Nacht :)")
-      deattachInterrupt(BlIncoming, Bluetooth, RISING)
-          deattachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
-  deattachInterrupt(BREMSE, Brems_Interrupt, RISING);
+  Serial.println("gut Nacht :)");
+  deatachInterrupt(BlIncoming, Bluetooth_Input, RISING);
+  deatachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
+  deatachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
 
   Modus_Auswahl = 0;
-  set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
-  sleep_Cpu();
+  //set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
+  //sleep_Cpu();
 }
 
 void SleepModusAUS()
 {
-  sleep_disable();
+  //sleep_disable();
   setup()
   Serial.println("Bin wach :D")
 }
@@ -115,7 +120,7 @@ void Moduswechsel()
 void Brems_Interrupt()
 {
   // abgeschlossen
-  int temp_Bremse = CicuitPlayground.motionZ();
+  int temp_Bremse = CircuitPlayground.motionZ();
 
   if (temp_Bremse < 0)
   {
@@ -160,7 +165,7 @@ void Bluetooth_Input()
 
   if (Input.count == 1)
   {
-    Modus_Auswal = Input[0];
+    Modus_Auswahl = Input[0];
   }
 
   if (Input.count == 2)
@@ -195,7 +200,7 @@ void Bluetooth_Input()
     case 2:
       pixels.fill(FARBE, 10, 10);
     case 3:
-      pixels.fill(Farbe, 20, 10);
+      pixels.fill(FARBE, 20, 10);
     default:
       pixels.clear();
     }
@@ -206,19 +211,19 @@ void Bluetooth_Input()
       {pixels.clear();
       CircuitPlayground.clearPixels();
       }
-    else if (Input[0] == -2) Bluetooth_out(Modus_Auswahl);
-    else if (Input[0] == -3)
-        //Vibrieren();
+    //else if (Input[0] == -2) Bluetooth_out(Modus_Auswahl);
+    /*else if (Input[0] == -3)
+        Vibrieren();*/
     else Modus_Auswahl = Input[0];
   }
 }
 
 /*=========================================================================*/
 //Sende Daten ans Handy
-void Bluetooth_out(char[] output)
+/*void Bluetooth_out(char[] output)
 {
   Serial.print(output);
-}
+}*/
 
 //Nicht implementiert
 void Vibrieren()
@@ -339,7 +344,7 @@ void colorWipe(uint32_t c, uint8_t wait)
     delay(wait);
   }
 }
-
+/*
 //TODO durch fill ersetzten?
 //um alle Pixel auf eine Farbe zu setzten ähnlich wie fill
 void setpix(int red, int green, int blue)
@@ -349,7 +354,7 @@ void setpix(int red, int green, int blue)
     pixels.setPixelColor(p, pixels.Color(red, green, blue));
   }
   pixels.show();
-}
+} */
 
 //Regenbogen wird über ColorWipe immer wieder an und aus gemacht
 void blink(int wait)
@@ -432,10 +437,10 @@ void buntBlink(int r, int g, int b)
       b = b + 5;
     }
 
-    setpixels(r, g, b);
-
+    pixels.fill(pixels.Color(r, g, b));
+    
     delay(100);
-    strip.clear();
+    pixels.clear();
     delay(100);
   }
 }
@@ -471,7 +476,7 @@ void theaterChaseRainbow(int wait)
         uint32_t color = pixels.gamma32(pixels.ColorHSV(hue)); // hue -> RGB
         pixels.setPixelColor(c, color);                        // Set pixel 'c' to value 'color'
       }
-      strip.show();                // Update strip with new contents
+      pixels.show();                // Update strip with new contents
       delay(wait);                 // Pause for a moment
       firstPixelHue += 65536 / 90; // One cycle of color wheel over 90 frames
     }
@@ -481,13 +486,13 @@ void theaterChaseRainbow(int wait)
 void partyParty()
 {
   blink(10);
-  theatherChaseRainbow(50);
+  theaterChaseRainbow(50);
   //colorWipeCircuit(); ?
   buntBlink(255, 0, 125);
   buntBlink(125, 0, 255);
   blink(10);
   buntBlink(0, 255, 125);
-  theatherChaseRainbow(50);
+  theaterChaseRainbow(50);
   buntBlink(0, 125, 255);
   buntBlink(125, 255, 0);
   blink(10);
@@ -498,14 +503,14 @@ void partyParty()
 //TODO
 void setup(void)
 {
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAN, RISING);
+  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
   attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
 
-  attachInterrupt(BlIncoming, Bluetooth, RISING);
+  attachInterrupt(BlIncoming, Bluetooth_Input, RISING);
 
   attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
   //Bei Bremsen auslösen
-  attachInterrupt(BREMSE, Brems_Interrupt, RISING);
+  attachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
 
   /*=========================================================================*/
   //setup for NeoPixels
@@ -616,18 +621,16 @@ void loop(void)
     //allgemeine Lichter rechts und Links
 
     //Bremse
-    if (Brems_Zeit < 5)
-      Brems_auswahl = false;
 
-    if (Brems_auswahl)
+    if (Brems_auswahl){
       //LICHTER_AN();
-    pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
-    pixels.fill(pixels.Color(50, 0, 0), 10, 10);
-    pixels.fill(pixels.Color(50, 50, 50), 20, 10);
-    pixels.fill(pixels.Color(50, 50, 50), 30, 10);
-    pixels.fill(pixels.Color(50, 0, 0), 40, 10);
-    pixels.fill(pixels.Color(50, 50, 50), 50, 10);
-    pixels.show();
+      pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
+      pixels.fill(pixels.Color(50, 0, 0), 10, 10);
+      pixels.fill(pixels.Color(50, 50, 50), 20, 10);
+      pixels.fill(pixels.Color(50, 50, 50), 30, 10);
+      pixels.fill(pixels.Color(50, 0, 0), 40, 10);
+      pixels.fill(pixels.Color(50, 50, 50), 50, 10);
+      pixels.show();}
     else pixels.clear();
 
   // Heiligenschein
