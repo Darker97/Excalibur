@@ -1,5 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
+#include <Adafruit_CircuitPlayground.h>
+
 #include <Arduino.h>
 #include <SPI.h>
 #include "Adafruit_BLE.h"
@@ -80,20 +82,20 @@ void Sicherheit_Temp()
 void SleepModus()
 {
   Serial.println("gut Nacht :)");
-  deatachInterrupt(BlIncoming, Bluetooth_Input, RISING);
-  deatachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
-  deatachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
+  //detachInterrupt(BlIncoming, Bluetooth_Input, RISING);
+  detachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
+  detachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
 
   Modus_Auswahl = 0;
-  set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
-  sleep_Cpu();
+  //set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
+  //sleep_Cpu();
 }
 
 void SleepModusAUS()
 {
-  sleep_disable();
-  setup()
-  Serial.println("Bin wach :D")
+  //sleep_disable();
+  setup();
+  Serial.println("Bin wach :D");
 }
 /*=========================================================================*/
 //abgeschlossen
@@ -513,14 +515,14 @@ void partyParty()
 //TODO
 void setup(void)
 {
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAN, RISING);
+  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
   attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
 
-  attachInterrupt(BlIncoming, Bluetooth, RISING);
+ // attachInterrupt(BlIncoming, Bluetooth, RISING);
 
   attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
   //Bei Bremsen auslösen
-  attachInterrupt(BREMSE, Brems_Interrupt, RISING);
+  attachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
 
   /*=========================================================================*/
   //setup for NeoPixels
@@ -630,19 +632,15 @@ void loop(void)
     pixels.show();
     //allgemeine Lichter rechts und Links
 
-    //Bremse
-    if (Brems_Zeit < 5)
-      Brems_auswahl = false;
-
-    if (Brems_auswahl)
+    if (Brems_auswahl){
       //LICHTER_AN();
-    pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
-    pixels.fill(pixels.Color(50, 0, 0), 10, 10);
-    pixels.fill(pixels.Color(50, 50, 50), 20, 10);
-    pixels.fill(pixels.Color(50, 50, 50), 30, 10);
-    pixels.fill(pixels.Color(50, 0, 0), 40, 10);
-    pixels.fill(pixels.Color(50, 50, 50), 50, 10);
-    pixels.show();
+        pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
+        pixels.fill(pixels.Color(50, 0, 0), 10, 10);
+        pixels.fill(pixels.Color(50, 50, 50), 20, 10);
+        pixels.fill(pixels.Color(50, 50, 50), 30, 10);
+        pixels.fill(pixels.Color(50, 0, 0), 40, 10);
+        pixels.fill(pixels.Color(50, 50, 50), 50, 10);
+        pixels.show();}
     else pixels.clear();
 
   // Heiligenschein
