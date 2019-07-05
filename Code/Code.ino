@@ -27,7 +27,7 @@
 #define INPUT_FLOOR     56  // Lower range of mic sensitivity in dB SPL
 #define INPUT_CEILING  110  // Upper range of mic sensitivity in db SPL
 
-Adafruit_BluefruitLE_UART ble(BLUEFRUIT_HWSERIAL_NAME, BLUEFRUIT_UART_MODE_PIN);
+Adafruit_BluefruitLE_UART ble(Serial1, BLUEFRUIT_UART_MODE_PIN);
 
 Adafruit_NeoPixel pixels(60, NEOPIXELSPIN, NEO_GRB + NEO_KHZ800);
 
@@ -63,7 +63,6 @@ void error(const __FlashStringHelper *err)
 }
 
 /*=========================================================================*/
-
 //Kleine Sichereheitsroutine die die Temperatur checkt und das board in den Sleep Modus schaltet, sollte es zu heiß werden.
 void Sicherheit_Temp()
 {
@@ -145,6 +144,27 @@ void LICHTER_AUS()
 }
 */
 /*=========================================================================*/
+
+bool getUserInput(char buffer[], uint8_t maxSize)
+{
+  // timeout in 100 milliseconds
+  TimeoutTimer timeout(100);
+
+  memset(buffer, 0, maxSize);
+  while( (!Serial.available()) && !timeout.expired() ) { delay(1); }
+
+  if ( timeout.expired() ) return false;
+
+  delay(2);
+  uint8_t count=0;
+  do
+  {
+    count += Serial.readBytes(buffer+count, maxSize);
+    delay(2);
+  } while( (count < maxSize) && (Serial.available()) );
+
+  return true;
+}
 
 //Auswerten von Signalen vom Handy
 //Fertig
@@ -576,29 +596,29 @@ void setup(void)
     delay(500);
   }
 
-  Serial.println(F("******************************"));
-
   // LED Activity command is only supported from 0.6.6
-  if (ble.isVersionAtLeast(MINIMUM_FIRMWARE_VERSION))
+  if ( ble.isVersionAtLeast(MINIMUM_FIRMWARE_VERSION) )
   {
     // Change Mode LED Activity
+    Serial.println(F("******************************"));
     Serial.println(F("Change LED activity to " MODE_LED_BEHAVIOUR));
     ble.sendCommandCheckOK("AT+HWModeLED=" MODE_LED_BEHAVIOUR);
+    Serial.println(F("******************************"));
   }
-
-  // Set module to DATA mode
-  Serial.println(F("Switching to DATA mode!"));
-  ble.setMode(BLUEFRUIT_MODE_DATA);
-
-  Serial.println(F("******************************"));
 }
-
 /*=========================================================================*/
 //TODO
 void loop(void)
 {
 
   Sicherheit_Temp();
+
+  char inputs[BUFSIZE+1];
+
+ if ( getUserInput(inputs, BUFSIZE) ){
+   Bluetooth_Input(inputs);
+ }
+
 
   switch (Modus_Auswahl)
   {
