@@ -1,6 +1,3 @@
-#include <Adafruit_CircuitPlayground.h>
-#include <Adafruit_Circuit_Playground.h>
-
 #include <Adafruit_NeoPixel.h>
 
 #include <Arduino.h>
@@ -17,7 +14,7 @@
 #include <SoftwareSerial.h>
 #endif
 
-#define NEOPIXELS_PIN A1
+#define NEOPIXELS_PIN 12
 #define FACTORYRESET_ENABLE 1
 #define MINIMUM_FIRMWARE_VERSION "0.6.6"
 #define MODE_LED_BEHAVIOUR "MODE"
@@ -30,7 +27,7 @@
 #define INPUT_FLOOR     56  // Lower range of mic sensitivity in dB SPL
 #define INPUT_CEILING  110  // Upper range of mic sensitivity in db SPL
 
-Adafruit_BluefruitLE_UART ble(BLUEFRUIT_HWSERIAL_NAME, BLUEFRUIT_UART_MODE_PIN);
+Adafruit_BluefruitLE_UART ble(Serial1, BLUEFRUIT_UART_MODE_PIN);
 
 Adafruit_NeoPixel pixels(60, NEOPIXELS_PIN, NEO_GRB + NEO_KHZ800);
 
@@ -56,7 +53,6 @@ float mapf(float x, float in_min, float in_max, float out_min, float out_max);
 #define MAX_TEMPERATUR 50
 
 /*=========================================================================*/
-
 // A small helper
 void error(const __FlashStringHelper *err)
 {
@@ -66,9 +62,6 @@ void error(const __FlashStringHelper *err)
 }
 
 /*=========================================================================*/
-
-
-
 //Kleine Sichereheitsroutine die die Temperatur checkt und das board in den Sleep Modus schaltet, sollte es zu heiß werden.
 void Sicherheit_Temp()
 {
@@ -92,13 +85,13 @@ void SleepModus()
   deatachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
 
   Modus_Auswahl = 0;
-  //set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
-  //sleep_Cpu();
+  set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
+  sleep_Cpu();
 }
 
 void SleepModusAUS()
 {
-  //sleep_disable();
+  sleep_disable();
   setup()
   Serial.println("Bin wach :D")
 }
@@ -150,14 +143,31 @@ void LICHTER_AUS()
 }
 */
 /*=========================================================================*/
+bool getUserInput(char buffer[], uint8_t maxSize)
+{
+  // timeout in 100 milliseconds
+  TimeoutTimer timeout(100);
+
+  memset(buffer, 0, maxSize);
+  while( (!Serial.available()) && !timeout.expired() ) { delay(1); }
+
+  if ( timeout.expired() ) return false;
+
+  delay(2);
+  uint8_t count=0;
+  do
+  {
+    count += Serial.readBytes(buffer+count, maxSize);
+    delay(2);
+  } while( (count < maxSize) && (Serial.available()) );
+
+  return true;
+}
 
 //Auswerten von Signalen vom Handy
 //Fertig
-void Bluetooth_Input()
+void Bluetooth_Input(char[] Input)
 {
-
-  char[] Input, inputs[BUFSIZE + 1];
-  Input = Serial.readBytes(inputs, BUFSIZE);
 
   //ALle Pixels clearen
   pixels.clear();
@@ -503,14 +513,14 @@ void partyParty()
 //TODO
 void setup(void)
 {
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
+  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAN, RISING);
   attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
 
-  attachInterrupt(BlIncoming, Bluetooth_Input, RISING);
+  attachInterrupt(BlIncoming, Bluetooth, RISING);
 
   attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
   //Bei Bremsen auslösen
-  attachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
+  attachInterrupt(BREMSE, Brems_Interrupt, RISING);
 
   /*=========================================================================*/
   //setup for NeoPixels
@@ -581,29 +591,29 @@ void setup(void)
     delay(500);
   }
 
-  Serial.println(F("******************************"));
-
   // LED Activity command is only supported from 0.6.6
-  if (ble.isVersionAtLeast(MINIMUM_FIRMWARE_VERSION))
+  if ( ble.isVersionAtLeast(MINIMUM_FIRMWARE_VERSION) )
   {
     // Change Mode LED Activity
+    Serial.println(F("******************************"));
     Serial.println(F("Change LED activity to " MODE_LED_BEHAVIOUR));
     ble.sendCommandCheckOK("AT+HWModeLED=" MODE_LED_BEHAVIOUR);
+    Serial.println(F("******************************"));
   }
-
-  // Set module to DATA mode
-  Serial.println(F("Switching to DATA mode!"));
-  ble.setMode(BLUEFRUIT_MODE_DATA);
-
-  Serial.println(F("******************************"));
 }
-
 /*=========================================================================*/
 //TODO
 void loop(void)
 {
 
   Sicherheit_Temp();
+
+  char inputs[BUFSIZE+1];
+
+ if ( getUserInput(inputs, BUFSIZE) ){
+   Bluetooth_Input(inputs);
+ }
+
 
   switch (Modus_Auswahl)
   {
@@ -621,16 +631,18 @@ void loop(void)
     //allgemeine Lichter rechts und Links
 
     //Bremse
+    if (Brems_Zeit < 5)
+      Brems_auswahl = false;
 
-    if (Brems_auswahl){
+    if (Brems_auswahl)
       //LICHTER_AN();
-      pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
-      pixels.fill(pixels.Color(50, 0, 0), 10, 10);
-      pixels.fill(pixels.Color(50, 50, 50), 20, 10);
-      pixels.fill(pixels.Color(50, 50, 50), 30, 10);
-      pixels.fill(pixels.Color(50, 0, 0), 40, 10);
-      pixels.fill(pixels.Color(50, 50, 50), 50, 10);
-      pixels.show();}
+    pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
+    pixels.fill(pixels.Color(50, 0, 0), 10, 10);
+    pixels.fill(pixels.Color(50, 50, 50), 20, 10);
+    pixels.fill(pixels.Color(50, 50, 50), 30, 10);
+    pixels.fill(pixels.Color(50, 0, 0), 40, 10);
+    pixels.fill(pixels.Color(50, 50, 50), 50, 10);
+    pixels.show();
     else pixels.clear();
 
   // Heiligenschein
