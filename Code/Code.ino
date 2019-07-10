@@ -1,6 +1,9 @@
 #include <Adafruit_NeoPixel.h>
 
-#include <Adafruit_CircuitPlayground.h>
+//Threads
+#include <ThreadController.h>
+#include <StaticThreadController.h>
+#include <Thread.h>
 
 #include <Arduino.h>
 #include <SPI.h>
@@ -111,23 +114,6 @@ void Moduswechsel()
   }
 }
 
-//abgeschlossen
-void Brems_Interrupt()
-{
-  // abgeschlossen
-  int temp_Bremse = CircuitPlayground.motionZ();
-
-  if (temp_Bremse < 0)
-  {
-    Brems_auswahl = true;
-  }
-  else
-  {
-    Brems_auswahl = false;
-  }
-
-  //Bluetooth_out("Gebremst");
-}
 /*
 void LICHTER_AN(int[][] LICHTER)
 {
@@ -144,91 +130,6 @@ void LICHTER_AUS()
   CircuitPlayground.clearPixels();
 }
 */
-/*=========================================================================*/
-bool getUserInput(char buffer[], uint8_t maxSize)
-{
-  // timeout in 100 milliseconds
-  TimeoutTimer timeout(100);
-
-  memset(buffer, 0, maxSize);
-  while( (!Serial.available()) && !timeout.expired() ) { delay(1); }
-
-  if ( timeout.expired() ) return false;
-
-  delay(2);
-  uint8_t count=0;
-  do
-  {
-    count += Serial.readBytes(buffer+count, maxSize);
-    delay(2);
-  } while( (count < maxSize) && (Serial.available()) );
-
-  return true;
-}
-
-//Auswerten von Signalen vom Handy
-//Fertig
-void Bluetooth_Input(char[] Input)
-{
-
-  //ALle Pixels clearen
-  pixels.clear();
-  CircuitPlayground.clearPixels();
-
-  if (Input.count == 1)
-  {
-    Modus_Auswahl = Input[0];
-  }
-
-  if (Input.count == 2)
-  {
-
-    uint32_t FARBE;
-    switch (Input[1])
-    {
-    //Rot
-    case 1:
-      FARBE = pixels.Color(255, 0, 0);
-    //Grün
-    case 2:
-      FARBE = pixels.Color(0, 255, 0);
-    //Blau
-    case 3:
-      FARBE = pixels.Color(0, 0, 255);
-    //Gelb
-    case 4:
-      FARBE = pixels.Color(255, 128, 0);
-    //Pink
-    case 5:
-      FARBE = pixels.Color(220, 118, 255);
-    //weiß
-    default:
-      FARBE = pixels.Color(255, 255, 255);
-    }
-    switch (Input[0])
-    {
-    case 1:
-      pixels.fill(FARBE, 0, 10);
-    case 2:
-      pixels.fill(FARBE, 10, 10);
-    case 3:
-      pixels.fill(FARBE, 20, 10);
-    default:
-      pixels.clear();
-    }
-  }
-  else
-  {
-    if(Input[0] == -1) 
-      {pixels.clear();
-      CircuitPlayground.clearPixels();
-      }
-    //else if (Input[0] == -2) Bluetooth_out(Modus_Auswahl);
-    /*else if (Input[0] == -3)
-        Vibrieren();*/
-    else Modus_Auswahl = Input[0];
-  }
-}
 
 /*=========================================================================*/
 //Sende Daten ans Handy
@@ -512,42 +413,94 @@ void partyParty()
 }
 
 /*=========================================================================*/
-//TODO
-void setup(void)
+bool getUserInput(char buffer[], uint8_t maxSize)
 {
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
+  // timeout in 100 milliseconds
+  TimeoutTimer timeout(100);
 
- // attachInterrupt(BlIncoming, Bluetooth, RISING);
+  memset(buffer, 0, maxSize);
+  while( (!Serial.available()) && !timeout.expired() ) { delay(1); }
 
-  attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
-  //Bei Bremsen auslösen
-  attachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
+  if ( timeout.expired() ) return false;
 
-  /*=========================================================================*/
-  //setup for NeoPixels
+  delay(2);
+  uint8_t count=0;
+  do
+  {
+    count += Serial.readBytes(buffer+count, maxSize);
+    delay(2);
+  } while( (count < maxSize) && (Serial.available()) );
 
-  // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
-  // Any other board, you can remove this part (but no harm leaving it):
-#if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
-  clock_prescale_set(clock_div_1);
-#endif
-  // END of Trinket-specific code.
-  //  CircuitPlayground.clear();
+  return true;
+}
 
-  CircuitPlayground.begin();
 
-  //neo pixel initalisieren und alle auf aus und Helligkeit einstellen
+//Auswerten von Signalen vom Handy
+//Fertig
+void Bluetooth_Input(char[] Input)
+{
+
+  //ALle Pixels clearen
   pixels.clear();
-  pixels.begin();
+  CircuitPlayground.clearPixels();
 
-  pixels.show();
-  pixels.setBrightness(50); //Helligkeit
+  if (Input.count == 1)
+  {
+    Modus_Auswahl = Input[0];
+  }
 
-  /*=========================================================================*/
+  if (Input.count == 2)
+  {
 
-  //Bluetooth
-  while (!Serial)
+    uint32_t FARBE;
+    switch (Input[1])
+    {
+    //Rot
+    case 1:
+      FARBE = pixels.Color(255, 0, 0);
+    //Grün
+    case 2:
+      FARBE = pixels.Color(0, 255, 0);
+    //Blau
+    case 3:
+      FARBE = pixels.Color(0, 0, 255);
+    //Gelb
+    case 4:
+      FARBE = pixels.Color(255, 128, 0);
+    //Pink
+    case 5:
+      FARBE = pixels.Color(220, 118, 255);
+    //weiß
+    default:
+      FARBE = pixels.Color(255, 255, 255);
+    }
+    switch (Input[0])
+    {
+    case 1:
+      pixels.fill(FARBE, 0, 10);
+    case 2:
+      pixels.fill(FARBE, 10, 10);
+    case 3:
+      pixels.fill(FARBE, 20, 10);
+    default:
+      pixels.clear();
+    }
+  }
+  else
+  {
+    if(Input[0] == -1) 
+      {pixels.clear();
+      CircuitPlayground.clearPixels();
+      }
+    //else if (Input[0] == -2) Bluetooth_out(Modus_Auswahl);
+    /*else if (Input[0] == -3)
+        Vibrieren();*/
+    else Modus_Auswahl = Input[0];
+  }
+}
+/*=========================================================================*/
+void Bluetooth_Setup(){
+    while (!Serial)
     ; // required for Flora & Micro
   delay(500);
 
@@ -602,21 +555,78 @@ void setup(void)
     ble.sendCommandCheckOK("AT+HWModeLED=" MODE_LED_BEHAVIOUR);
     Serial.println(F("******************************"));
   }
+
+
+}
+
+void NeoPixel_Setup(){
+    //setup for NeoPixels
+
+  // These lines are specifically to support the Adafruit Trinket 5V 16 MHz.
+  // Any other board, you can remove this part (but no harm leaving it):
+  #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
+  clock_prescale_set(clock_div_1);
+  #endif
+  // END of Trinket-specific code.
+  //  CircuitPlayground.clear();
+
+  CircuitPlayground.begin();
+
+  //neo pixel initalisieren und alle auf aus und Helligkeit einstellen
+  pixels.clear();
+  pixels.begin();
+
+  pixels.show();
+  pixels.setBrightness(50); //Helligkeit
+}
+
+//TODO
+void setup(void)
+{
+  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
+  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
+  attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
+
+  /*=========================================================================*/
+  NeoPixel_Setup();
+  Bluetooth_Setup();
+
+  Thread myThread = Thread();
+  myThread.onRun(loop_bluetooth);
+  myThread.enabled = true;
 }
 /*=========================================================================*/
 //TODO
+void loop_bluetooth(){
+  while (true){
+        // Check for user input
+      char inputs[BUFSIZE+1];
+
+      if ( getUserInput(inputs, BUFSIZE) )
+      {
+        // Send characters to Bluefruit
+        Serial.print("[Send] ");
+        Serial.println(inputs);
+        Bluetooth_Input(inputs);
+      }
+
+      // Check for incoming characters from Bluefruit
+      ble.println("AT+BLEUARTRX");
+      ble.readline();
+      if (strcmp(ble.buffer, "OK") == 0) {
+        // no data
+        return;
+      }
+      // Some data was found, its in the buffer
+      Serial.print(F("[Recv] ")); Serial.println(ble.buffer);
+      ble.waitForOK();
+  }
+}
+
 void loop(void)
 {
 
   Sicherheit_Temp();
-
-  char inputs[BUFSIZE+1];
-
- if ( getUserInput(inputs, BUFSIZE) ){
-   Bluetooth_Input(inputs);
- }
-
-
   switch (Modus_Auswahl)
   {
     //Standart
@@ -632,15 +642,27 @@ void loop(void)
     pixels.show();
     //allgemeine Lichter rechts und Links
 
+    //Bremse
+    int temp_Bremse = CircuitPlayground.motionZ();
+      if (temp_Bremse < 0)
+      {
+        Brems_auswahl = true;
+      }
+      else
+      {
+        Brems_auswahl = false;
+      }
+
+
     if (Brems_auswahl){
       //LICHTER_AN();
-        pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
-        pixels.fill(pixels.Color(50, 0, 0), 10, 10);
-        pixels.fill(pixels.Color(50, 50, 50), 20, 10);
-        pixels.fill(pixels.Color(50, 50, 50), 30, 10);
-        pixels.fill(pixels.Color(50, 0, 0), 40, 10);
-        pixels.fill(pixels.Color(50, 50, 50), 50, 10);
-        pixels.show();}
+      pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
+      pixels.fill(pixels.Color(50, 0, 0), 10, 10);
+      pixels.fill(pixels.Color(50, 50, 50), 20, 10);
+      pixels.fill(pixels.Color(50, 50, 50), 30, 10);
+      pixels.fill(pixels.Color(50, 0, 0), 40, 10);
+      pixels.fill(pixels.Color(50, 50, 50), 50, 10);
+      pixels.show();}
     else pixels.clear();
 
   // Heiligenschein
