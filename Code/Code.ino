@@ -640,6 +640,9 @@ void loop(void)
 {
   if (strcmp(ble.buffer, "OK") != 0) 
           Serial.println(ble.buffer);    
+
+
+          
   loop_Button();
   Sicherheit_Temp();
   
