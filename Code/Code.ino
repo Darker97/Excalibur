@@ -580,14 +580,18 @@ unsigned long timeFirst_rightButton = millis();
 void loop_Button(){
   //Serial.println("Button_LOOP");
   timeZwei = millis();
+
+ // Serial.println(timeZwei);
   
   bool leftButtonPressed;
   bool rightButtonPressed;
 
-  leftButtonPressed = !CircuitPlayground.leftButton();
-  rightButtonPressed = !CircuitPlayground.rightButton();
+  leftButtonPressed = CircuitPlayground.leftButton();
+  rightButtonPressed = CircuitPlayground.rightButton();
 
-  if (leftButtonPressed && timeZwei-timeFirst_leftButton<20) {
+  //Serial.println(leftButtonPressed);
+
+  if (leftButtonPressed && (timeZwei-timeFirst_leftButton)<1000) {
       Moduswechsel();
       leftButtonPressed = false;
       timeFirst_leftButton = timeZwei;
@@ -645,17 +649,20 @@ void loop(void)
           
   loop_Button();
   Sicherheit_Temp();
-  
+
+  Modus_Auswahl = 4;
   switch (Modus_Auswahl)
   {
     
     //Standart
   case 0:
     //Serial.println("LOOP");
+     Serial.println(Modus_Auswahl);
     break;
     //Bremse
   case 1:
     //TODO Positionen prüfen
+    Serial.println(Modus_Auswahl);
     pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
     pixels.fill(pixels.Color(50, 50, 50), 20, 10);
     pixels.fill(pixels.Color(50, 50, 50), 30, 10);
@@ -688,15 +695,18 @@ void loop(void)
     break;
   // Heiligenschein
   case 2:
+    Serial.println(Modus_Auswahl);
     colorWipe(pixels.Color(255, 128, 0), 50);
     setpixCircuit(255, 128, 0);
     break;
   //Party
   case 3:
+    Serial.println(Modus_Auswahl);
     partyParty();
     break;
   //Sound Farbe im Zufall => rand()
   case 4:
+    Serial.println(Modus_Auswahl);
     soundSensor();
     break;
   }
