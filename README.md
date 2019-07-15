@@ -1,49 +1,19 @@
 # Excalibur
-Ein Smartes Stirnband
+## Ein Smartes Stirnband
 
-Für unser Bachelor Projekt, sollten wir ein Wearables planen und umsetzen. 
+Für unser Bachelor Projekt, sollten wir ein Wearable planen und umsetzen. 
+Wir haben uns für den Bau eines smartes Stirnbandes entschieden.
 
-## Idee
+Das Stirnband ist mit mehreren Sensoren ausgestattet, welche für verschiedene Modi nutzbar sind.
 
+Als Modi haben wir:
+- Fahrmodus mit Bremse
+- Heiligenschein
+- Party
+- Sound Modus
 
-## Stirnband
-### Bauanleitung fürs Stirnband
+### App
+Alle Funktionen lassen sich auch per passender App ansteuern:
 
-
-
-
-
-## App
-### Allgemein
-
-
-### Aufbau
-
-
-
-
-## Verbindungen
-
-In der Komunikation zwischen Band und App wollen wir so wenig wie möglich übertragen, weswegen wir Codes verwenden. Der Circuit Playground setzt diese dann um.
-
-### Diagram (Idee)
-Der User soll den Modus ändern können, wir realisieren dies auf zwei Wegen
-
-![Screenshot 2019-06-17 at 14 17 18](https://user-images.githubusercontent.com/35217578/59603935-f9e8e100-910a-11e9-84ad-1227f53c89d9.png)
-
-### Diagram (Technisch)
-![Screenshot 2019-06-17 at 14 17 10](https://user-images.githubusercontent.com/35217578/59603934-f9504a80-910a-11e9-91bb-f0ac2ee4891a.png)
-
-
-### Codes für die Verbindung
-
-|Nummer|FunctionsName  | Beschreibung|
-|--|--|--|
-| 0 |Standart  | |
-| 1| Bremse ||
-|2|Heiligenschein||||
-|3|Party||
-|4|Sound||
-
-
-
+![image](https://user-images.githubusercontent.com/35217578/61205929-8fb76200-a6f1-11e9-994f-5f4318c4161b.png)
+(TODO)
