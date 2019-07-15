@@ -28,9 +28,9 @@
 
 #define SAMPLE_WINDOW   10  // Sample window for average level
 #define PEAK_HANG       24  // Time of pause before peak dot falls
-#define PEAK_FALL        4  // Rate of falling peak dot
+#define PEAK_FALL        8  // Rate of falling peak dot
 
-#define INPUT_FLOOR     56  // Lower range of mic sensitivity in dB SPL
+#define INPUT_FLOOR     40  // Lower range of mic sensitivity in dB SPL
 #define INPUT_CEILING  110  // Upper range of mic sensitivity in db SPL
 
 Adafruit_BluefruitLE_UART ble(Serial1, BLUEFRUIT_UART_MODE_PIN);
@@ -210,7 +210,6 @@ uint32_t Wheel(byte WheelPos) {
 }
 
 void soundSensor() {
-  // diese Func könnte man auch in die Loop schreiben? 
   float peakToPeak = 0;   // peak-to-peak level
   unsigned int c, y;
 
@@ -282,7 +281,7 @@ void blink(int wait)
   // Color wheel has a range of 65536 but it's OK if we roll over, so
   // just count from 0 to 5*65536. Adding 256 to firstPixelHue each time
   // means we'll make 5*65536/256 = 1280 passes through this outer loop:
-  for (long firstPixelHue = 0; firstPixelHue < 5 * 65536; firstPixelHue += 256)
+  for (long firstPixelHue = 0; firstPixelHue < 2; firstPixelHue += 256)
   {
     for (int i = 0; i < pixels.numPixels(); i++)
     { // For each pixel in strip...
@@ -380,7 +379,7 @@ void colorWipeDefine(uint32_t c, uint8_t wait, int begin, int end)
 void theaterChaseRainbow(int wait)
 {
   int firstPixelHue = 0; // First pixel starts at red (hue 0)
-  for (int a = 0; a < 30; a++)
+  for (int a = 0; a < 5; a++)
   { // Repeat 30 times...
     for (int b = 0; b < 3; b++)
     {                 //  'b' counts from 0 to 2...
@@ -404,18 +403,9 @@ void theaterChaseRainbow(int wait)
 
 void partyParty()
 {
-  blink(10);
   theaterChaseRainbow(50);
-  //colorWipeCircuit(); ?
-  buntBlink(255, 0, 125);
-  buntBlink(125, 0, 255);
+  //buntBlink(125, 0, 255);
   blink(10);
-  buntBlink(0, 255, 125);
-  theaterChaseRainbow(50);
-  buntBlink(0, 125, 255);
-  buntBlink(125, 255, 0);
-  blink(10);
-  buntBlink(255, 125, 0);
 }
 
 /*=========================================================================*/
@@ -506,8 +496,6 @@ void Bluetooth_Input(char Input[])
 }
 /*=========================================================================*/
 void Bluetooth_Setup(){
-    while (!Serial)
-    ; // required for Flora & Micro
   delay(500);
 
   Serial.begin(115200);
@@ -572,16 +560,16 @@ void setup(void)
 /*=========================================================================*/
 //TODO
 
-unsigned long timeFirst_leftButton = millis();
+unsigned long timeFirst_leftButton = 0;
 unsigned long timeZwei;
 
-unsigned long timeFirst_rightButton = millis();
+unsigned long timeFirst_rightButton = 0;
 
 void loop_Button(){
   //Serial.println("Button_LOOP");
   timeZwei = millis();
 
- // Serial.println(timeZwei);
+  Serial.println(timeZwei);
   
   bool leftButtonPressed;
   bool rightButtonPressed;
@@ -589,21 +577,23 @@ void loop_Button(){
   leftButtonPressed = CircuitPlayground.leftButton();
   rightButtonPressed = CircuitPlayground.rightButton();
 
-  //Serial.println(leftButtonPressed);
+  Serial.println(leftButtonPressed);
 
-  if (leftButtonPressed && (timeZwei-timeFirst_leftButton)<1000) {
+  if (leftButtonPressed && (timeFirst_leftButton-timeZwei)>3000) {
+      Serial.println("leftPressed");
       Moduswechsel();
       leftButtonPressed = false;
       timeFirst_leftButton = timeZwei;
     }else leftButtonPressed = false;
     
-  if (rightButtonPressed && timeZwei-timeFirst_rightButton<20) {
+  if (rightButtonPressed && (timeFirst_rightButton-timeZwei)>1000) {
       loop_bluetooth();
       rightButtonPressed = false;
       timeFirst_rightButton = timeZwei;
     }else rightButtonPressed = false;
     
 }
+
 void loop_bluetooth(){
   Serial.println("Bluetooth_LOOP");
      /* Wait for connection */
@@ -623,34 +613,24 @@ void loop_bluetooth(){
   }
 
   while (ble.isConnected()){
-          // Check for incoming characters from Bluefruit
-          //ble.println("AT+BLEUARTRX");
-          ble.readline();
-          if (strcmp(ble.buffer, "OK") == 0) {
-            // no data
-            return;
-          }
-      // Some data was found, its in the buffer
-        char temp[65];
-        strcpy(temp, ble.buffer);
-        Serial.println(temp);
-        ble.waitForOK();
-        Bluetooth_Input(temp);
+    
+      
+        //Bluetooth_Input(temp);
       }
       
 }
 
 void loop(void)
-{
+{/*
   if (strcmp(ble.buffer, "OK") != 0) 
-          Serial.println(ble.buffer);    
+      Serial.println(ble.buffer);    
+*/
 
-
-          
+  //Moduswechsel();        
   loop_Button();
   Sicherheit_Temp();
 
-  Modus_Auswahl = 4;
+  //Modus_Auswahl = 4;
   switch (Modus_Auswahl)
   {
     
@@ -671,7 +651,8 @@ void loop(void)
     //allgemeine Lichter rechts und Links
 
     //Bremse
-    int Bewegung = CircuitPlayground.motionZ();
+    int Bewegung;
+    Bewegung = CircuitPlayground.motionZ();
       if (Bewegung < 0)
       {
         Brems_auswahl = true;
@@ -690,7 +671,8 @@ void loop(void)
       pixels.fill(pixels.Color(50, 50, 50), 30, 10);
       pixels.fill(pixels.Color(50, 0, 0), 40, 10);
       pixels.fill(pixels.Color(50, 50, 50), 50, 10);
-      pixels.show();}
+      pixels.show();
+      delay(3000);}
     else pixels.clear();
     break;
   // Heiligenschein
