@@ -1,4 +1,5 @@
 #include <Adafruit_NeoPixel.h>
+#include <Adafruit_CircuitPlayground.h>
 
 //Threads
 #include <ThreadController.h>
@@ -54,6 +55,10 @@ byte dotHangCount = 0; //Frame counter for holding peak dot
 float mapf(float x, float in_min, float in_max, float out_min, float out_max);
 //Ende SOund Sensor STuff
 /*=========================================================================*/
+
+//Thread Controll
+ThreadController controll = ThreadController();
+/*=========================================================================*/
 //Deffinieren von Werten
 #define MAX_TEMPERATUR 50
 
@@ -74,37 +79,38 @@ void Sicherheit_Temp()
   if (Temp_Temperatur >= MAX_TEMPERATUR)
   {
     Serial.println("ZU HEIß");
-    SleepModus();
+    //SleepModus();
   }
 }
 
 /*=========================================================================*/
 //Sleep Modi an
-
+/*
 //TODO: CPU zum schlafen bringen
 void SleepModus()
 {
   Serial.println("gut Nacht :)");
-  deatachInterrupt(BlIncoming, Bluetooth_Input, RISING);
-  deatachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
-  deatachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
+  //detachInterrupt(BlIncoming, Bluetooth_Input, RISING);
+  detachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
+  detachInterrupt(Brems_Interrupt, Brems_Interrupt, RISING);
 
   Modus_Auswahl = 0;
-  set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
-  sleep_Cpu();
+  //set_sleep_Mode(SLEEP_MODE_PWR_DOWN);
+  //sleep_Cpu();
 }
 
 void SleepModusAUS()
 {
-  sleep_disable();
-  setup()
-  Serial.println("Bin wach :D")
-}
+  //sleep_disable();
+  setup();
+  Serial.println("Bin wach :D");
+}*/
 /*=========================================================================*/
 //abgeschlossen
 void Moduswechsel()
 {
   //ALle Pixels clearen
+  Serial.println("MODUSWECHSEL");
   pixels.clear();
   CircuitPlayground.clearPixels();
   Modus_Auswahl++;
@@ -437,19 +443,19 @@ bool getUserInput(char buffer[], uint8_t maxSize)
 
 //Auswerten von Signalen vom Handy
 //Fertig
-void Bluetooth_Input(char[] Input)
+void Bluetooth_Input(char Input[])
 {
 
   //ALle Pixels clearen
   pixels.clear();
   CircuitPlayground.clearPixels();
 
-  if (Input.count == 1)
+  if (sizeof(Input) == 1)
   {
     Modus_Auswahl = Input[0];
   }
 
-  if (Input.count == 2)
+  if (sizeof(Input) == 2)
   {
 
     uint32_t FARBE;
@@ -517,16 +523,6 @@ void Bluetooth_Setup(){
   }
   Serial.println(F("OK!"));
 
-  if (FACTORYRESET_ENABLE)
-  {
-    /* Perform a factory reset to make sure everything is in a known state */
-    Serial.println(F("Performing a factory reset: "));
-    if (!ble.factoryReset())
-    {
-      error(F("Couldn't factory reset"));
-    }
-  }
-
   /* Disable command echo from Bluefruit */
   ble.echo(false);
 
@@ -534,29 +530,7 @@ void Bluetooth_Setup(){
   /* Print Bluefruit information */
   ble.info();
 
-  Serial.println(F("Please use Adafruit Bluefruit LE app to connect in UART mode"));
-  Serial.println(F("Then Enter characters to send to Bluefruit"));
-  Serial.println();
-
-  ble.verbose(false); // debug info is a little annoying after this point!
-
-  /* Wait for connection */
-  while (!ble.isConnected())
-  {
-    delay(500);
-  }
-
-  // LED Activity command is only supported from 0.6.6
-  if ( ble.isVersionAtLeast(MINIMUM_FIRMWARE_VERSION) )
-  {
-    // Change Mode LED Activity
-    Serial.println(F("******************************"));
-    Serial.println(F("Change LED activity to " MODE_LED_BEHAVIOUR));
-    ble.sendCommandCheckOK("AT+HWModeLED=" MODE_LED_BEHAVIOUR);
-    Serial.println(F("******************************"));
-  }
-
-
+  ble.verbose(false); // debug info is a little annoying after this poin!
 }
 
 void NeoPixel_Setup(){
@@ -580,61 +554,115 @@ void NeoPixel_Setup(){
   pixels.setBrightness(50); //Helligkeit
 }
 
+
+
 //TODO
 void setup(void)
 {
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
-  attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
-  attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
+ // attachInterrupt(CircuitPlayground.slideSwitch(), SleepModus, RISING);
+ // attachInterrupt(CircuitPlayground.slideSwitch(), SleepModusAUS, FALLING);
+  //attachInterrupt(CircuitPlayground.leftButton(), Moduswechsel, RISING);
 
   /*=========================================================================*/
   NeoPixel_Setup();
   Bluetooth_Setup();
 
-  Thread myThread = Thread();
-  myThread.onRun(loop_bluetooth);
-  myThread.enabled = true;
+  //CircuitPlayground.begin();
 }
 /*=========================================================================*/
 //TODO
+
+unsigned long timeFirst_leftButton = millis();
+unsigned long timeZwei;
+
+unsigned long timeFirst_rightButton = millis();
+
+void loop_Button(){
+  //Serial.println("Button_LOOP");
+  timeZwei = millis();
+
+ // Serial.println(timeZwei);
+  
+  bool leftButtonPressed;
+  bool rightButtonPressed;
+
+  leftButtonPressed = CircuitPlayground.leftButton();
+  rightButtonPressed = CircuitPlayground.rightButton();
+
+  //Serial.println(leftButtonPressed);
+
+  if (leftButtonPressed && (timeZwei-timeFirst_leftButton)<1000) {
+      Moduswechsel();
+      leftButtonPressed = false;
+      timeFirst_leftButton = timeZwei;
+    }else leftButtonPressed = false;
+    
+  if (rightButtonPressed && timeZwei-timeFirst_rightButton<20) {
+      loop_bluetooth();
+      rightButtonPressed = false;
+      timeFirst_rightButton = timeZwei;
+    }else rightButtonPressed = false;
+    
+}
 void loop_bluetooth(){
-  while (true){
-        // Check for user input
-      char inputs[BUFSIZE+1];
-
-      if ( getUserInput(inputs, BUFSIZE) )
-      {
-        // Send characters to Bluefruit
-        Serial.print("[Send] ");
-        Serial.println(inputs);
-        Bluetooth_Input(inputs);
-      }
-
-      // Check for incoming characters from Bluefruit
-      ble.println("AT+BLEUARTRX");
-      ble.readline();
-      if (strcmp(ble.buffer, "OK") == 0) {
-        // no data
-        return;
-      }
-      // Some data was found, its in the buffer
-      Serial.print(F("[Recv] ")); Serial.println(ble.buffer);
-      ble.waitForOK();
+  Serial.println("Bluetooth_LOOP");
+     /* Wait for connection */
+  while (!ble.isConnected())
+  {
+    delay(500);
   }
+
+  // LED Activity command is only supported from 0.6.6
+  if ( ble.isVersionAtLeast(MINIMUM_FIRMWARE_VERSION) )
+  {
+    // Change Mode LED Activity
+    Serial.println(F("******************************"));
+    Serial.println(F("Change LED activity to " MODE_LED_BEHAVIOUR));
+    ble.sendCommandCheckOK("AT+HWModeLED=" MODE_LED_BEHAVIOUR);
+    Serial.println(F("******************************"));
+  }
+
+  while (ble.isConnected()){
+          // Check for incoming characters from Bluefruit
+          //ble.println("AT+BLEUARTRX");
+          ble.readline();
+          if (strcmp(ble.buffer, "OK") == 0) {
+            // no data
+            return;
+          }
+      // Some data was found, its in the buffer
+        char temp[65];
+        strcpy(temp, ble.buffer);
+        Serial.println(temp);
+        ble.waitForOK();
+        Bluetooth_Input(temp);
+      }
+      
 }
 
 void loop(void)
 {
+  if (strcmp(ble.buffer, "OK") != 0) 
+          Serial.println(ble.buffer);    
 
+
+          
+  loop_Button();
   Sicherheit_Temp();
+
+  Modus_Auswahl = 4;
   switch (Modus_Auswahl)
   {
+    
     //Standart
   case 0:
-
+    //Serial.println("LOOP");
+     Serial.println(Modus_Auswahl);
+    break;
     //Bremse
   case 1:
     //TODO Positionen prüfen
+    Serial.println(Modus_Auswahl);
     pixels.fill(pixels.Color(50, 50, 50), 0, 10); //hier ist jeweils die Frage ob die Position stimmt und wo fängt der Alg anzuzählen
     pixels.fill(pixels.Color(50, 50, 50), 20, 10);
     pixels.fill(pixels.Color(50, 50, 50), 30, 10);
@@ -643,8 +671,8 @@ void loop(void)
     //allgemeine Lichter rechts und Links
 
     //Bremse
-    int temp_Bremse = CircuitPlayground.motionZ();
-      if (temp_Bremse < 0)
+    int Bewegung = CircuitPlayground.motionZ();
+      if (Bewegung < 0)
       {
         Brems_auswahl = true;
       }
@@ -664,18 +692,23 @@ void loop(void)
       pixels.fill(pixels.Color(50, 50, 50), 50, 10);
       pixels.show();}
     else pixels.clear();
-
+    break;
   // Heiligenschein
   case 2:
+    Serial.println(Modus_Auswahl);
     colorWipe(pixels.Color(255, 128, 0), 50);
     setpixCircuit(255, 128, 0);
-
+    break;
   //Party
   case 3:
+    Serial.println(Modus_Auswahl);
     partyParty();
-
+    break;
   //Sound Farbe im Zufall => rand()
   case 4:
+    Serial.println(Modus_Auswahl);
     soundSensor();
+    break;
   }
+  
 }
